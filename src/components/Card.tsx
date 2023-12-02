@@ -11,7 +11,7 @@ export default function Card(props: Props) {
   }
 
   return (
-    <div className="card w-96 bg-neutral shadow-xl mx-auto my-4">
+    <div className="card w-80 sm:w-96 bg-neutral shadow-xl mx-auto my-4">
       <div className="card-body">
         <h2 className="card-title capitalize">{props.name}</h2>
         <div className="grid grid-cols-2">
