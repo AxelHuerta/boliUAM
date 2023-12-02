@@ -1,15 +1,16 @@
 import { useParams } from "react-router-dom";
+import { useUeas } from "../store/Store";
 
 export default function UeaDetails() {
   const { ueaId } = useParams();
 
-  const name = "cursos complementarios";
-  const credits = 26;
-  const trimestre = 0;
+  const { uea } = useUeas((state) => state);
 
   return (
     <>
-      <h1 className="capitalize text-2xl font-bold text-center my-4">{name}</h1>
+      <h1 className="capitalize text-2xl font-bold text-center my-4">
+        {uea.name}
+      </h1>
       <ul className="mx-4">
         <li>
           <span className="font-bold mr-2">Clave:</span>
@@ -17,11 +18,11 @@ export default function UeaDetails() {
         </li>
         <li>
           <span className="font-bold mr-2">Créditos:</span>
-          {credits}
+          {uea.credits}
         </li>
         <li>
           <span className="font-bold mr-2">Trimestre:</span>
-          {trimestre}
+          {uea.trimestre}
         </li>
       </ul>
     </>
