@@ -21,7 +21,7 @@ export const useUeas = create(
     (set) => ({
       uea: { name: "", id: "", credits: 0, trimestre: 0 },
       setUea: (uea: Uea) =>
-        set((state) => ({
+        set(() => ({
           uea,
         })),
     }),
