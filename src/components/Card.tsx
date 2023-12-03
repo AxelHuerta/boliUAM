@@ -1,11 +1,17 @@
+import { Link } from "react-router-dom";
+import { useUeas } from "../store/Store";
+
 type Props = {
   name: string;
   id: string;
   credits: number;
   type: string;
+  trimestre: number;
 };
 
 export default function Card(props: Props) {
+  const { setUea } = useUeas((state) => state);
+
   if (props.credits === -1) {
     return <div></div>;
   }
@@ -23,7 +29,19 @@ export default function Card(props: Props) {
           )}
         </div>
         <div className="card-actions justify-end">
-          <button className="btn btn-primary">Detalles</button>
+          <Link
+            to={`/ueas/${props.id}`}
+            onClick={() =>
+              setUea({
+                name: props.name,
+                id: props.id,
+                credits: props.credits,
+                trimestre: props.trimestre,
+              })
+            }
+          >
+            <button className="btn btn-primary">Detalles</button>
+          </Link>
         </div>
       </div>
     </div>

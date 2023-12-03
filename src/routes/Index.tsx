@@ -1,10 +1,8 @@
 import { Link, Outlet } from "react-router-dom";
 import Card from "../components/Card";
 import { trimestres } from "../content/trimestres";
-import { useUeas } from "../store/Store";
 
 export default function Index() {
-  const { setUea } = useUeas((state) => state);
   return (
     <div className="flex flex-col justify-center items-center">
       <h1 className="text-6xl font-extrabold text-center my-12">BoliUAM</h1>
@@ -18,26 +16,14 @@ export default function Index() {
               {trimestre.map((uea, index) => {
                 return (
                   <>
-                    <Link
-                      to={`/ueas/${uea.id}`}
-                      onClick={() =>
-                        setUea({
-                          name: uea.uea,
-                          id: uea.id,
-                          credits: uea.credits,
-                          trimestre: trimestre[0].trimestre,
-                        })
-                      }
-                    >
-                      <Card
-                        name={uea.uea}
-                        id={uea.id}
-                        credits={uea.credits}
-                        type={uea.type}
-                        key={index}
-                      />
-                    </Link>
-                    <Outlet />
+                    <Card
+                      name={uea.uea}
+                      id={uea.id}
+                      credits={uea.credits}
+                      type={uea.type}
+                      key={index}
+                      trimestre={uea.trimestre}
+                    />
                   </>
                 );
               })}
