@@ -6,6 +6,7 @@ interface Uea {
   id: string;
   credits: number;
   trimestre: number;
+  seritation: string[];
 }
 
 type State = {
@@ -19,7 +20,7 @@ type Actions = {
 export const useUeas = create(
   persist<State & Actions>(
     (set) => ({
-      uea: { name: "", id: "", credits: 0, trimestre: 0 },
+      uea: { name: "", id: "", credits: 0, trimestre: 0, seritation: [""] },
       setUea: (uea: Uea) =>
         set(() => ({
           uea,

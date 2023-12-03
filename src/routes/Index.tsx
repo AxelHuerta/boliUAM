@@ -1,4 +1,3 @@
-import { Link, Outlet } from "react-router-dom";
 import Card from "../components/Card";
 import { trimestres } from "../content/trimestres";
 
@@ -23,6 +22,7 @@ export default function Index() {
                       type={uea.type}
                       key={index}
                       trimestre={uea.trimestre}
+                      seriation={uea.seriation}
                     />
                   </>
                 );

@@ -7,6 +7,7 @@ type Props = {
   credits: number;
   type: string;
   trimestre: number;
+  seriation: string[];
 };
 
 export default function Card(props: Props) {
@@ -37,6 +38,7 @@ export default function Card(props: Props) {
                 id: props.id,
                 credits: props.credits,
                 trimestre: props.trimestre,
+                seritation: props.seriation,
               })
             }
           >

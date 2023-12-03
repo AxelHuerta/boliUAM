@@ -24,6 +24,12 @@ export default function UeaDetails() {
           <span className="font-bold mr-2">Trimestre:</span>
           {uea.trimestre}
         </li>
+        <li>
+          <span className="font-bold mr-2">Seriación:</span>
+          {uea.seritation.length > 0
+            ? uea.seritation.toString()
+            : "Esta UEA no esta seriada"}
+        </li>
       </ul>
     </>
   );
