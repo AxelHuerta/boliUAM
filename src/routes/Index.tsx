@@ -12,7 +12,7 @@ export default function Index() {
             <h2 className="text-xl font-bold m-4">
               Trimestre {trimestre[0].trimestre}
             </h2>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+            <div className="grid grid-cols-1 gap-8 xl:grid-cols-3 2xl:grid-cols-4">
               {trimestre.map((uea, index) => {
                 return (
                   <>

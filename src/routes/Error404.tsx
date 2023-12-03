@@ -6,8 +6,8 @@ export default function Error404() {
   console.error(error);
 
   return (
-    <div className="flex h-screen mx-4">
-      <img src={image404} alt="404 error" />
+    <div className="flex h-screen justify-center mx-4">
+      <img src={image404} alt="404 error" className="max-w-md" />
     </div>
   );
 }
