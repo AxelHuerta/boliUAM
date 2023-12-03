@@ -7,30 +7,30 @@ export default function UeaDetails() {
   const { uea } = useUeas((state) => state);
 
   return (
-    <>
-      <h1 className="capitalize text-2xl font-bold text-center my-4">
+    <div className="max-w-6xl m-auto">
+      <h1 className="uppercase text-2xl font-bold text-center my-12">
         {uea.name}
       </h1>
-      <ul className="mx-4">
-        <li>
-          <span className="font-bold mr-2">Clave:</span>
+      <ul className="mx-4 bg-neutral px-4 py-8 rounded-md md:flex justify-between">
+        <li className="flex justify-between">
+          <span className="font-extrabold mr-2">Clave:</span>
           {ueaId}
         </li>
-        <li>
-          <span className="font-bold mr-2">Créditos:</span>
+        <li className="flex justify-between">
+          <span className="font-extrabold mr-2">Créditos:</span>
           {uea.credits}
         </li>
-        <li>
-          <span className="font-bold mr-2">Trimestre:</span>
+        <li className="flex justify-between">
+          <span className="font-extrabold mr-2">Trimestre:</span>
           {uea.trimestre}
         </li>
-        <li>
-          <span className="font-bold mr-2">Seriación:</span>
+        <li className="flex justify-between">
+          <span className="font-extrabold mr-2">Seriación:</span>
           {uea.seritation.length > 0
             ? uea.seritation.toString()
             : "Esta UEA no esta seriada"}
         </li>
       </ul>
-    </>
+    </div>
   );
 }
