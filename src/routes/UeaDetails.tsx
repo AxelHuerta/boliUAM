@@ -5,7 +5,12 @@ import Navbar from "../components/Navbar";
 export default function UeaDetails() {
   const { ueaId } = useParams();
 
-  const { uea } = useUeas((state) => state);
+  const { uea, approvedUeasID, setApprovedUeasID } = useUeas((state) => state);
+
+  const approveUea = () => {
+    approvedUeasID.push(uea.id);
+    setApprovedUeasID(approvedUeasID);
+  };
 
   return (
     <>
@@ -34,6 +39,12 @@ export default function UeaDetails() {
               : "Esta UEA no esta seriada"}
           </li>
         </ul>
+        <div className="m-4 bg-neutral px-4 py-8 rounded-md md:flex justify-around items-center">
+          <p>¿Ya aprobaste esta materia?</p>
+          <button className="btn btn-active btn-primary" onClick={approveUea}>
+            Aprobar
+          </button>
+        </div>
       </div>
     </>
   );

@@ -11,14 +11,20 @@ type Props = {
 };
 
 export default function Card(props: Props) {
-  const { setUea } = useUeas((state) => state);
+  const { setUea, approvedUeasID } = useUeas((state) => state);
 
   if (props.credits === -1) {
     return <div></div>;
   }
 
   return (
-    <div className="card w-80 sm:w-96 bg-neutral shadow-xl mx-auto my-4">
+    <div
+      className={`card w-80 sm:w-96 shadow-xl mx-auto my-4 ${
+        approvedUeasID.includes(props.id)
+          ? "bg-success text-black"
+          : "bg-neutral"
+      }`}
+    >
       <div className="card-body">
         <h2 className="card-title capitalize">{props.name}</h2>
         <div className="grid grid-cols-2">
@@ -42,7 +48,15 @@ export default function Card(props: Props) {
               })
             }
           >
-            <button className="btn btn-primary">Detalles</button>
+            <button
+              className={`btn ${
+                approvedUeasID.includes(props.id)
+                  ? "btn-neutral text-white"
+                  : "btn-primary"
+              }`}
+            >
+              Detalles
+            </button>
           </Link>
         </div>
       </div>
