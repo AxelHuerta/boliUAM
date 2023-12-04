@@ -22,9 +22,9 @@ export const useUeas = create(
         })),
       setApprovedUeasID: (ueas: string[]) =>
         set(() => ({
-          ueas,
+          approvedUeasID: ueas,
         })),
     }),
-    { name: "ueas" },
-  ),
+    { name: "ueasState" }
+  )
 );
