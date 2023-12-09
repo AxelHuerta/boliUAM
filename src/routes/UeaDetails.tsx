@@ -12,6 +12,11 @@ export default function UeaDetails() {
     setApprovedUeasID(approvedUeasID);
   };
 
+  const disapproveUea = () => {
+    const newArray = approvedUeasID.filter((id) => id !== ueaId);
+    setApprovedUeasID(newArray);
+  };
+
   return (
     <>
       <Navbar />
@@ -40,10 +45,26 @@ export default function UeaDetails() {
           </li>
         </ul>
         <div className="m-4 bg-neutral px-4 py-8 rounded-md md:flex justify-around items-center">
-          <p>¿Ya aprobaste esta materia?</p>
-          <button className="btn btn-active btn-primary" onClick={approveUea}>
-            Aprobar
-          </button>
+          <p>
+            {approvedUeasID.includes(ueaId || "")
+              ? "¡UEA aprobada!"
+              : "¿Ya aprobaste esta materia?"}
+          </p>
+          {approvedUeasID.includes(ueaId || "") ? (
+            <button
+              className="btn btn-active btn-neutral"
+              onClick={disapproveUea}
+            >
+              Desmarcar
+            </button>
+          ) : (
+            <button
+              className="btn btn-active btn-primary animate-jump"
+              onClick={approveUea}
+            >
+              Aprobar
+            </button>
+          )}
         </div>
       </div>
     </>
