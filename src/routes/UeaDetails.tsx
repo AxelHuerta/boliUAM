@@ -17,6 +17,25 @@ export default function UeaDetails() {
     setApprovedUeasID(newArray);
   };
 
+  const checkSeriation = (): boolean => {
+    if (uea.seritation.length == 0) {
+      return true;
+    }
+
+    let check = true;
+
+    uea.seritation.forEach((element) => {
+      if (!approvedUeasID.includes(element)) {
+        console.log("El elemnto es: ", element);
+        check = false;
+      }
+    });
+
+    return check;
+  };
+
+  console.log(checkSeriation());
+
   return (
     <>
       <Navbar />
@@ -45,25 +64,31 @@ export default function UeaDetails() {
           </li>
         </ul>
         <div className="m-4 bg-neutral px-4 py-8 rounded-md md:flex justify-around items-center">
-          <p>
-            {approvedUeasID.includes(ueaId || "")
-              ? "¡UEA aprobada!"
-              : "¿Ya aprobaste esta materia?"}
-          </p>
-          {approvedUeasID.includes(ueaId || "") ? (
-            <button
-              className="btn btn-active btn-neutral"
-              onClick={disapproveUea}
-            >
-              Desmarcar
-            </button>
+          {checkSeriation() ? (
+            <>
+              <p>
+                {approvedUeasID.includes(ueaId || "")
+                  ? "¡UEA aprobada!"
+                  : "¿Ya aprobaste esta materia?"}
+              </p>
+              {approvedUeasID.includes(ueaId || "") ? (
+                <button
+                  className="btn btn-active btn-neutral"
+                  onClick={disapproveUea}
+                >
+                  Desmarcar
+                </button>
+              ) : (
+                <button
+                  className="btn btn-active btn-primary animate-jump"
+                  onClick={approveUea}
+                >
+                  Aprobar
+                </button>
+              )}
+            </>
           ) : (
-            <button
-              className="btn btn-active btn-primary animate-jump"
-              onClick={approveUea}
-            >
-              Aprobar
-            </button>
+            <p>Esta UEA esta seriada</p>
           )}
         </div>
       </div>
