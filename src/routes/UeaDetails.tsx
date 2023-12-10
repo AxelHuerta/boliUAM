@@ -34,8 +34,6 @@ export default function UeaDetails() {
     return check;
   };
 
-  console.log(checkSeriation());
-
   return (
     <>
       <Navbar />
