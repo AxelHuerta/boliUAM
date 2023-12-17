@@ -5,16 +5,19 @@ import Navbar from "../components/Navbar";
 export default function UeaDetails() {
   const { ueaId } = useParams();
 
-  const { uea, approvedUeasID, setApprovedUeasID } = useUeas((state) => state);
+  const { uea, approvedUeasID, setApprovedUeasID, credits, setCredits } =
+    useUeas((state) => state);
 
   const approveUea = () => {
     approvedUeasID.push(uea.id);
     setApprovedUeasID(approvedUeasID);
+    setCredits(credits + uea.credits);
   };
 
   const disapproveUea = () => {
     const newArray = approvedUeasID.filter((id) => id !== ueaId);
     setApprovedUeasID(newArray);
+    setCredits(credits - uea.credits);
   };
 
   const checkSeriation = (): boolean => {
