@@ -10,7 +10,7 @@ type Props = {
   seriation: string[];
 };
 
-export default function Card(props: Props) {
+export default function Card(props: Readonly<Props>) {
   const { setUea, approvedUeasID } = useUeas((state) => state);
 
   if (props.credits === -1) {
@@ -27,37 +27,28 @@ export default function Card(props: Props) {
     >
       <div className="card-body">
         <h2 className="card-title capitalize">{props.name}</h2>
-        <div className="grid grid-cols-2">
+        <div className="grid grid-cols-3">
           {props.type.includes("optativa") ? null : (
             <>
-              <p>Clave {props.id}</p>
-              <p>Créditos {props.credits}</p>
+              <div className="font-extrabold">
+                <span className="text-gray-400">clave</span>
+                <p>{props.id}</p>
+              </div>
+              <div className="font-extrabold">
+                <span className="text-gray-400">créditos</span>
+                <p>{props.credits}</p>
+              </div>
+              <button
+                className={`btn ${
+                  approvedUeasID.includes(props.id)
+                    ? "btn-neutral text-white"
+                    : "btn-primary"
+                }`}
+              >
+                Detalles
+              </button>
             </>
           )}
-        </div>
-        <div className="card-actions justify-end">
-          <Link
-            to={`/ueas/${props.id}`}
-            onClick={() =>
-              setUea({
-                name: props.name,
-                id: props.id,
-                credits: props.credits,
-                trimestre: props.trimestre,
-                seritation: props.seriation,
-              })
-            }
-          >
-            <button
-              className={`btn ${
-                approvedUeasID.includes(props.id)
-                  ? "btn-neutral text-white"
-                  : "btn-primary"
-              }`}
-            >
-              Detalles
-            </button>
-          </Link>
         </div>
       </div>
     </div>
