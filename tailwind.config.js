@@ -13,7 +13,7 @@ export default {
           secondary: "#f5c2e7", // pink
           accent: "#89dceb", // sky
           neutral: "#11111b", // crust
-          "base-100": "#1e1e2e", // base
+          "base-100": "#08080b", // base
           info: "#74c7ec", // sapphire
           success: "#94e2d5", // teal
           warning: "#f9e2af", // yellow
