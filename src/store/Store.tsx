@@ -2,27 +2,21 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 type State = {
-  uea: Uea;
-  approvedUeasID: string[];
+  approvedUeas: string[];
 };
 
 type Actions = {
-  setUea: (uea: Uea) => void;
-  setApprovedUeasID: (ueas: string[]) => void;
+  setApprovedUeas: (ueas: string[]) => void;
 };
 
 export const useUeas = create(
   persist<State & Actions>(
     (set) => ({
-      uea: { name: "", id: "", credits: 0, trimestre: 0, seritation: [""] },
-      approvedUeasID: [],
-      setUea: (uea: Uea) =>
+      approvedUeas: [],
+
+      setApprovedUeas: (ueas: string[]) =>
         set(() => ({
-          uea,
-        })),
-      setApprovedUeasID: (ueas: string[]) =>
-        set(() => ({
-          approvedUeasID: ueas,
+          approvedUeas: ueas,
         })),
     }),
     { name: "ueasState" }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useUeas } from "../store/Store";
 
 type Props = {
@@ -11,10 +11,14 @@ type Props = {
 };
 
 export default function Card(props: Readonly<Props>) {
-  const { name, id, credits, type, trimester, seriation } = props;
-  const { setUea, approvedUeasID } = useUeas((state) => state);
+  const { name, id, credits, type } = props;
+  const { approvedUeas, setApprovedUeas } = useUeas((state) => state);
   const [isCopied, setIsCopied] = useState(false);
+  const [isApproved, setIsApproved] = useState(false);
 
+  /**
+   * Copy 'clave' (id) to clipboard.
+   */
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(id);
@@ -27,6 +31,28 @@ export default function Card(props: Readonly<Props>) {
     }
   };
 
+  const checkIfUeaIsApproved = () => {
+    return approvedUeas.includes(id);
+  };
+
+  /**
+   * Handler to change the state of the UEA.
+   */
+  const handlerUeaState = () => {
+    if (!isApproved) {
+      setApprovedUeas([...approvedUeas, id]);
+    } else {
+      // TODO: refactor this
+      setApprovedUeas(approvedUeas.filter((approvedUea) => approvedUea !== id));
+    }
+
+    setIsApproved(!isApproved);
+  };
+
+  useEffect(() => {
+    setIsApproved(checkIfUeaIsApproved());
+  }, []);
+
   if (props.credits === -1) {
     return <div></div>;
   }
@@ -34,16 +60,18 @@ export default function Card(props: Readonly<Props>) {
   return (
     <div
       className={`card w-80 sm:w-96 shadow-xl my-4 ${
-        approvedUeasID.includes(id) ? "bg-success text-black" : "bg-neutral"
+        isApproved ? "bg-primary text-black" : "bg-neutral"
       }`}
     >
       <div className="card-body">
         {/* header */}
         <div className="flex justify-between items-center font-extrabold">
           <div>
-            <span className="text-gray-400">clave: </span>
+            {/* id or clave */}
+            <span className="text-gray-500">clave: </span>
             {id}
           </div>
+          {/* copy button */}
           <button onClick={copyToClipboard}>
             {isCopied ? "Copied" : "Copy"}
           </button>
@@ -53,14 +81,24 @@ export default function Card(props: Readonly<Props>) {
         <h2 className="card-title capitalize h-[100px] justify-center">
           {name}
         </h2>
+
+        {/* credits and button */}
         {type.includes("optativa") ? null : (
           <div className="flex justify-between w-full px-2">
             <div className="font-extrabold">
-              <span className="text-gray-400">créditos</span>
+              {/* credits */}
+              <span className="text-gray-500">créditos</span>
               <p>{credits}</p>
             </div>
-            <button className="btn btn-primary btn-outline text-right">
-              Aprobar
+            <button
+              className={`btn text-right btn-outline ${
+                isApproved
+                  ? "border border-black text-black hover:bg-transparent hover:border-black"
+                  : "btn-primary"
+              }`}
+              onClick={handlerUeaState}
+            >
+              {isApproved ? "Desaprobar" : "Aprobar"}
             </button>
           </div>
         )}
