@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useUeas } from "../store/Store";
+import ConfettiExplosion from "react-confetti-explosion";
 
 type Props = {
   name: string;
@@ -15,6 +16,7 @@ export default function Card(props: Readonly<Props>) {
   const { approvedUeas, setApprovedUeas } = useUeas((state) => state);
   const [isCopied, setIsCopied] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
+  const [isApprovedForPushButton, setIsApprovedForPushButton] = useState(false);
 
   /**
    * Copy 'clave' (id) to clipboard.
@@ -41,9 +43,11 @@ export default function Card(props: Readonly<Props>) {
   const handlerUeaState = () => {
     if (!isApproved) {
       setApprovedUeas([...approvedUeas, id]);
+      setIsApprovedForPushButton(true);
     } else {
       // TODO: refactor this
       setApprovedUeas(approvedUeas.filter((approvedUea) => approvedUea !== id));
+      setIsApprovedForPushButton(false);
     }
 
     setIsApproved(!isApproved);
@@ -103,6 +107,10 @@ export default function Card(props: Readonly<Props>) {
           </div>
         )}
       </div>
+
+      {isApprovedForPushButton && (
+        <ConfettiExplosion className="fixed left-0 top-0" width={5000} />
+      )}
     </div>
   );
 }
