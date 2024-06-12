@@ -10,7 +10,7 @@ export default function Index() {
         <h1 className="text-6xl font-extrabold text-center my-12">BoliUAM</h1>
         {trimestres.map((trimestre, index) => {
           return (
-            <div key={index} className="text-center">
+            <div key={index + trimestre[index].id} className="text-center">
               <h2 className="text-xl font-bold m-4">
                 Trimestre {trimestre[0].trimestre}
               </h2>
@@ -22,8 +22,8 @@ export default function Index() {
                       id={uea.id}
                       credits={uea.credits}
                       type={uea.type}
-                      key={index}
-                      trimestre={uea.trimestre}
+                      key={index + uea.id}
+                      trimester={uea.trimestre}
                       seriation={uea.seriation}
                     />
                   );
