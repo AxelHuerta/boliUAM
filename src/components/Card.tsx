@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useUeas } from "../store/Store";
 
 type Props = {
@@ -6,12 +6,52 @@ type Props = {
   id: string;
   credits: number;
   type: string;
-  trimestre: number;
+  trimester: number;
   seriation: string[];
 };
 
-export default function Card(props: Props) {
-  const { setUea, approvedUeasID } = useUeas((state) => state);
+export default function Card(props: Readonly<Props>) {
+  const { name, id, credits, type } = props;
+  const { approvedUeas, setApprovedUeas } = useUeas((state) => state);
+  const [isCopied, setIsCopied] = useState(false);
+  const [isApproved, setIsApproved] = useState(false);
+
+  /**
+   * Copy 'clave' (id) to clipboard.
+   */
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(id);
+      setIsCopied(true);
+      setInterval(() => {
+        setIsCopied(false);
+      }, 4000);
+    } catch (error) {
+      console.log("Error copy to clipboard: ", error);
+    }
+  };
+
+  const checkIfUeaIsApproved = () => {
+    return approvedUeas.includes(id);
+  };
+
+  /**
+   * Handler to change the state of the UEA.
+   */
+  const handlerUeaState = () => {
+    if (!isApproved) {
+      setApprovedUeas([...approvedUeas, id]);
+    } else {
+      // TODO: refactor this
+      setApprovedUeas(approvedUeas.filter((approvedUea) => approvedUea !== id));
+    }
+
+    setIsApproved(!isApproved);
+  };
+
+  useEffect(() => {
+    setIsApproved(checkIfUeaIsApproved());
+  }, []);
 
   if (props.credits === -1) {
     return <div></div>;
@@ -19,46 +59,49 @@ export default function Card(props: Props) {
 
   return (
     <div
-      className={`card w-80 sm:w-96 shadow-xl mx-auto my-4 ${
-        approvedUeasID.includes(props.id)
-          ? "bg-success text-black"
-          : "bg-neutral"
+      className={`card w-80 sm:w-96 shadow-xl my-4 ${
+        isApproved ? "bg-primary text-black" : "bg-neutral"
       }`}
     >
       <div className="card-body">
-        <h2 className="card-title capitalize">{props.name}</h2>
-        <div className="grid grid-cols-2">
-          {props.type.includes("optativa") ? null : (
-            <>
-              <p>Clave {props.id}</p>
-              <p>Créditos {props.credits}</p>
-            </>
-          )}
+        {/* header */}
+        <div className="flex justify-between items-center font-extrabold">
+          <div>
+            {/* id or clave */}
+            <span className="text-gray-500">clave: </span>
+            {id}
+          </div>
+          {/* copy button */}
+          <button onClick={copyToClipboard}>
+            {isCopied ? "Copied" : "Copy"}
+          </button>
         </div>
-        <div className="card-actions justify-end">
-          <Link
-            to={`/ueas/${props.id}`}
-            onClick={() =>
-              setUea({
-                name: props.name,
-                id: props.id,
-                credits: props.credits,
-                trimestre: props.trimestre,
-                seritation: props.seriation,
-              })
-            }
-          >
+
+        {/* title */}
+        <h2 className="card-title capitalize h-[100px] justify-center">
+          {name}
+        </h2>
+
+        {/* credits and button */}
+        {type.includes("optativa") ? null : (
+          <div className="flex justify-between w-full px-2">
+            <div className="font-extrabold">
+              {/* credits */}
+              <span className="text-gray-500">créditos</span>
+              <p>{credits}</p>
+            </div>
             <button
-              className={`btn ${
-                approvedUeasID.includes(props.id)
-                  ? "btn-neutral text-white"
+              className={`btn text-right btn-outline ${
+                isApproved
+                  ? "border border-black text-black hover:bg-transparent hover:border-black"
                   : "btn-primary"
               }`}
+              onClick={handlerUeaState}
             >
-              Detalles
+              {isApproved ? "Desaprobar" : "Aprobar"}
             </button>
-          </Link>
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
