@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { useUeas } from "../store/Store";
 
 // TODO: Add functionality to show the credits
 export default function Navbar() {
