@@ -1,4 +1,3 @@
-import ConfettiExplosion from "react-confetti-explosion";
 import Card from "./components/Card";
 import Navbar from "./components/Navbar";
 import { trimestres } from "./content/trimestres";
