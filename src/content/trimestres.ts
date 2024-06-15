@@ -255,7 +255,7 @@ export const trimestres = [
   // trimestre 7
   [
     {
-      id: "2155064",
+      id: "2255064",
       trimestre: 7,
       uea: "inglés intermedio I",
       credits: 10,
@@ -291,7 +291,7 @@ export const trimestres = [
   // trimestre 8
   [
     {
-      id: "2155065",
+      id: "2255065",
       trimestre: 8,
       uea: "inglés intermedio II",
       credits: 10,
@@ -327,7 +327,7 @@ export const trimestres = [
   // trimestre 9
   [
     {
-      id: "2155066",
+      id: "2255066",
       trimestre: 9,
       uea: "inglés intermedio III",
       credits: 10,
