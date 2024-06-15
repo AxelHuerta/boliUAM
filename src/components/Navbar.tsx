@@ -1,12 +1,13 @@
-// TODO: Add functionality to show the credits
+import { useUeas } from "../store/Store";
+
 export default function Navbar() {
-  // const { credits } = useUeas((state) => state);
+  const { totalCredits } = useUeas((state) => state);
 
   return (
     <div className="navbar bg-neutral fixed z-10 justify-between">
       BoliUAM
       <ul className="px-4">
-        <li>Créditos: {}</li>
+        <li>Créditos: {totalCredits}</li>
       </ul>
     </div>
   );

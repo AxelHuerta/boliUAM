@@ -13,7 +13,8 @@ type Props = {
 
 export default function Card(props: Readonly<Props>) {
   const { name, id, credits, type } = props;
-  const { approvedUeas, setApprovedUeas } = useUeas((state) => state);
+  const { approvedUeas, setApprovedUeas, totalCredits, setTotalCredits } =
+    useUeas((state) => state);
   const [isCopied, setIsCopied] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
   const [isApprovedForPushButton, setIsApprovedForPushButton] = useState(false);
@@ -33,6 +34,9 @@ export default function Card(props: Readonly<Props>) {
     }
   };
 
+  /**
+   * Chech if the UEA is already approved.
+   */
   const checkIfUeaIsApproved = () => {
     return approvedUeas.includes(id);
   };
@@ -43,10 +47,12 @@ export default function Card(props: Readonly<Props>) {
   const handlerUeaState = () => {
     if (!isApproved) {
       setApprovedUeas([...approvedUeas, id]);
+      setTotalCredits(totalCredits + credits);
       setIsApprovedForPushButton(true);
     } else {
       // TODO: refactor this
       setApprovedUeas(approvedUeas.filter((approvedUea) => approvedUea !== id));
+      setTotalCredits(totalCredits - credits);
       setIsApprovedForPushButton(false);
     }
 
@@ -109,7 +115,11 @@ export default function Card(props: Readonly<Props>) {
       </div>
 
       {isApprovedForPushButton && (
-        <ConfettiExplosion className="fixed left-0 top-0" width={5000} />
+        <ConfettiExplosion
+          className="fixed left-0 top-0"
+          width={5000}
+          duration={1500}
+        />
       )}
     </div>
   );
