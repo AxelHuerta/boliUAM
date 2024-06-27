@@ -5,3 +5,9 @@ interface Uea {
   trimestre: number;
   seritation: string[];
 }
+
+interface UeaOptativa {
+  id: number;
+  uea: string;
+  credits: number;
+}

@@ -420,7 +420,7 @@ export const trimestres = [
       uea: "optativa CBI",
       credits: 9,
       seriation: [],
-      type: "optativa",
+      type: "cbi",
     },
     {
       id: "",
@@ -456,7 +456,7 @@ export const trimestres = [
       uea: "optativa CBI",
       credits: 9,
       seriation: [],
-      type: "optativaComputacion",
+      type: "cbi",
     },
     {
       id: "",

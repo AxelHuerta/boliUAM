@@ -1,6 +1,8 @@
 import Card from "./components/Card";
 import Navbar from "./components/Navbar";
 import { trimestres } from "./content/trimestres";
+import ueasCBI from "./content/optativasCBI.json";
+import CardOptativa from "./components/CardOptativa";
 
 function App() {
   return (
@@ -16,6 +18,20 @@ function App() {
               </h2>
               <div className="grid grid-cols-1 gap-8 xl:grid-cols-3 2xl:grid-cols-4">
                 {trimestre.map((uea, index) => {
+                  if (uea.type === "cbi") {
+                    return (
+                      <CardOptativa
+                        name={uea.uea}
+                        id={uea.id}
+                        credits={uea.credits}
+                        type={uea.type}
+                        key={index + uea.id}
+                        trimester={uea.trimestre}
+                        seriation={uea.seriation}
+                        options={ueasCBI.ueasCBI}
+                      />
+                    );
+                  }
                   return (
                     <Card
                       name={uea.uea}
