@@ -1,4 +1,6 @@
 import { Button } from "./button";
+import { useUeas } from "../../store/Store";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -20,28 +22,86 @@ type Props = {
 };
 
 function UeaCard(props: Readonly<Props>) {
-  const { uea } = props;
+  const { id, uea, credits, trimester, seriation, type } = props.uea;
+  const { approvedUeas, setApprovedUeas, totalCredits, setTotalCredits } =
+    useUeas((state) => state);
+  const [isCopied, setIsCopied] = useState(false);
+  const [isApproved, setIsApproved] = useState(false);
+  const [isApprovedForPushButton, setIsApprovedForPushButton] = useState(false);
 
-  if (uea.credits === -1) return <div></div>;
+  /**
+   * Copy 'clave' (id) to clipboard.
+   */
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(id);
+      setIsCopied(true);
+      setInterval(() => {
+        setIsCopied(false);
+      }, 4000);
+    } catch (error) {
+      console.log("Error copy to clipboard: ", error);
+    }
+  };
+
+  /**
+   * Chech if the UEA is already approved.
+   */
+  const checkIfUeaIsApproved = () => {
+    return approvedUeas.includes(id);
+  };
+
+  /**
+   * Handler to change the state of the UEA.
+   */
+  const handlerUeaState = () => {
+    if (!isApproved) {
+      setApprovedUeas([...approvedUeas, id]);
+      setTotalCredits(totalCredits + credits);
+      setIsApprovedForPushButton(true);
+    } else {
+      // TODO: refactor this
+      setApprovedUeas(approvedUeas.filter((approvedUea) => approvedUea !== id));
+      setTotalCredits(totalCredits - credits);
+      setIsApprovedForPushButton(false);
+    }
+
+    setIsApproved(!isApproved);
+  };
+
+  useEffect(() => {
+    setIsApproved(checkIfUeaIsApproved());
+  }, []);
+
+  if (credits === -1) return <div></div>;
 
   return (
-    <Card className="w-80">
+    <Card className={`w-80 ${isApproved ? "border-2 border-green-600" : ""}`}>
       <CardHeader>
-        <CardDescription className="flex justify-between">
-          <div>clave:{uea.id}</div>
-          <div>Copy</div>
+        <CardDescription className="flex justify-between items-center">
+          <div>
+            clave: <span className="font-bold">{id}</span>
+          </div>
+          <Button variant="ghost">Copy</Button>
         </CardDescription>
       </CardHeader>
 
       <CardContent className="min-h-[8em] flex items-center">
-        <CardTitle className="capitalize">{uea.uea}</CardTitle>
+        <CardTitle className="capitalize">{uea}</CardTitle>
       </CardContent>
 
       <CardFooter>
-        <CardDescription className="flex justify-between w-full">
-          <div>créditos: {uea.credits}</div>
+        <CardDescription className="flex justify-between items-center w-full">
           <div>
-            <Button>Aprobar</Button>
+            créditos: <span className="font-bold">{credits}</span>
+          </div>
+          <div>
+            <Button
+              variant={isApproved ? "secondary" : "default"}
+              onClick={handlerUeaState}
+            >
+              {isApproved ? "Desaprobar" : "Aprobar"}
+            </Button>
           </div>
         </CardDescription>
       </CardFooter>
