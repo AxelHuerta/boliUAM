@@ -9,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "./card";
+import { Copy, CopyCheck } from "lucide-react";
 
 type Props = {
   uea: {
@@ -38,7 +39,7 @@ function UeaCard(props: Readonly<Props>) {
       setIsCopied(true);
       setInterval(() => {
         setIsCopied(false);
-      }, 4000);
+      }, 3000);
     } catch (error) {
       console.log("Error copy to clipboard: ", error);
     }
@@ -82,7 +83,9 @@ function UeaCard(props: Readonly<Props>) {
           <div>
             clave: <span className="font-bold">{id}</span>
           </div>
-          <Button variant="ghost">Copy</Button>
+          <Button variant="ghost" onClick={copyToClipboard}>
+            {isCopied ? <CopyCheck size={18} /> : <Copy size={18} />}
+          </Button>
         </CardDescription>
       </CardHeader>
 
