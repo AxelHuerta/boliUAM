@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from "./card";
 import { Copy, CopyCheck } from "lucide-react";
+import ConfettiExplosion from "react-confetti-explosion";
 
 type Props = {
   uea: {
@@ -23,7 +24,7 @@ type Props = {
 };
 
 function UeaCard(props: Readonly<Props>) {
-  const { id, uea, credits, trimester, seriation, type } = props.uea;
+  const { id, uea, credits } = props.uea;
   const { approvedUeas, setApprovedUeas, totalCredits, setTotalCredits } =
     useUeas((state) => state);
   const [isCopied, setIsCopied] = useState(false);
@@ -77,38 +78,49 @@ function UeaCard(props: Readonly<Props>) {
   if (credits === -1) return <div></div>;
 
   return (
-    <Card className={`w-80 ${isApproved ? "border-2 border-green-600" : ""}`}>
-      <CardHeader>
-        <CardDescription className="flex justify-between items-center">
-          <div>
-            clave: <span className="font-bold">{id}</span>
-          </div>
-          <Button variant="ghost" onClick={copyToClipboard}>
-            {isCopied ? <CopyCheck size={18} /> : <Copy size={18} />}
-          </Button>
-        </CardDescription>
-      </CardHeader>
-
-      <CardContent className="min-h-[8em] flex items-center">
-        <CardTitle className="capitalize">{uea}</CardTitle>
-      </CardContent>
-
-      <CardFooter>
-        <CardDescription className="flex justify-between items-center w-full">
-          <div>
-            créditos: <span className="font-bold">{credits}</span>
-          </div>
-          <div>
-            <Button
-              variant={isApproved ? "secondary" : "default"}
-              onClick={handlerUeaState}
-            >
-              {isApproved ? "Desaprobar" : "Aprobar"}
+    <>
+      <Card className={`w-80 ${isApproved ? "border-2 border-green-600" : ""}`}>
+        <CardHeader>
+          <CardDescription className="flex justify-between items-center">
+            <div>
+              clave: <span className="font-bold">{id}</span>
+            </div>
+            <Button variant="ghost" onClick={copyToClipboard}>
+              {isCopied ? <CopyCheck size={18} /> : <Copy size={18} />}
             </Button>
-          </div>
-        </CardDescription>
-      </CardFooter>
-    </Card>
+          </CardDescription>
+        </CardHeader>
+
+        <CardContent className="min-h-[8em] flex items-center">
+          <CardTitle className="capitalize">{uea}</CardTitle>
+        </CardContent>
+
+        <CardFooter>
+          <CardDescription className="flex justify-between items-center w-full">
+            <div>
+              créditos: <span className="font-bold">{credits}</span>
+            </div>
+            <div>
+              <Button
+                variant={isApproved ? "secondary" : "default"}
+                onClick={handlerUeaState}
+              >
+                {isApproved ? "Desaprobar" : "Aprobar"}
+              </Button>
+            </div>
+          </CardDescription>
+        </CardFooter>
+      </Card>
+
+      {/* Confetti explotion */}
+      {isApprovedForPushButton && (
+        <ConfettiExplosion
+          className="fixed left-0 top-0"
+          width={5000}
+          duration={1500}
+        />
+      )}
+    </>
   );
 }
 
