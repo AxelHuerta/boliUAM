@@ -1,0 +1,131 @@
+[
+  {
+    "faltan": [
+      "Circuitos electronicos ii",
+      "Circuitos electronicos iii",
+      "optimizacion",
+      "metodos computancionales en ingenieria biomedica",
+      "teoria de los numeros i"
+    ]
+  },
+  {
+    "id": 2121005,
+    "uea": "INTRODUCCION A LA INGENIERIA QUIMICA",
+    "credits": 9
+  },
+  {
+    "id": 2121020,
+    "uea": "FENOMENOS DE TRANSPORTE I",
+    "credits": 12
+  },
+  {
+    "id": 2122010,
+    "uea": "TERMODINAMICA I (INGENIERIA)",
+    "credits": 12
+  },
+  {
+    "id": 2121023,
+    "uea": "TERMODINAMICA II (INGENIERIA)",
+    "credits": 12
+  },
+  {
+    "id": 2122059,
+    "uea": "MECANICA DE FLUIDOS",
+    "credits": 9
+  },
+  {
+    "id": 2124029,
+    "uea": "MECANICA DE FLUIDOS",
+    "credits": 12
+  },
+  {
+    "id": 2151010,
+    "uea": "CIRCUITOS ELECTRICOS I",
+    "credits": 12
+  },
+  {
+    "id": 2151066,
+    "uea": "CIRCUITOS ELECTRICOS I",
+    "credits": 12
+  },
+  {
+    "id": 2132009,
+    "uea": "PROGRAMACION MATEMATICA I",
+    "credits": 9
+  },
+  {
+    "id": 2151040,
+    "uea": "INTERFACES PROGRAMABLES",
+    "credits": 12
+  },
+  {
+    "id": 2110018,
+    "uea": "ELECTRICIDAD Y MAGNETISMO ELEMENTAL I",
+    "credits": 0
+  },
+  {
+    "id": 2110021,
+    "uea": "FLUIDOS Y CALOR",
+    "credits": 0
+  },
+  {
+    "id": 2122063,
+    "uea": "TRANSFERENCIA DE CALOR",
+    "credits": 9
+  },
+  {
+    "id": 2122086,
+    "uea": "FUNDAMENTOS Y MODELOS DE OPTIMIZACION",
+    "credits": 9
+  },
+  {
+    "id": 2131055,
+    "uea": "TEORIA DE GRAFICAS",
+    "credits": 9
+  },
+  {
+    "id": 2131092,
+    "uea": "ECUACIONES DIFERENCIALES PARCIALES",
+    "credits": 9
+  },
+  {
+    "id": 2132032,
+    "uea": "TEORIA DE CONJUNTOS",
+    "credits": 9
+  },
+  {
+    "id": 2900023,
+    "uea": "OPTATIVA INTERDISCIPLINARIA III",
+    "credits": 9
+  },
+  {
+    "id": 2900025,
+    "uea": "OPTATIVA INTERDISCIPLINARIA V",
+    "credits": 9
+  },
+  {
+    "id": 2900026,
+    "uea": "OPTATIVA INTERDISCIPLINARIA VI",
+    "credits": 9
+  },
+  {
+    "id": 2110009,
+    "uea": "FISICA IV",
+    "credits": 9
+  },
+  {
+    "id": 2110015,
+    "uea": "CAMPOS",
+    "credits": 9
+  },
+  {
+    "id": 2131020,
+    "uea": "GEOMETRIA I",
+    "credits": 9
+  },
+  {
+    "id": 2132027,
+    "uea": "GEOMETRIA II",
+    "credits": 9
+  },
+]
