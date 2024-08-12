@@ -1,39 +1,28 @@
-import Card from "./components/Card";
-import Navbar from "./components/Navbar";
-import { trimestres } from "./content/trimestres";
+import { ThemeProvider } from "./ThemeProvider";
+import Navbar from "./components/ui/Navbar";
+import UeaCard from "./components/ui/UeaCard";
+import { trimesters } from "./content/ueas";
 
 function App() {
   return (
-    <>
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <Navbar />
-      <div className="flex flex-col justify-center items-center pt-12">
-        <h1 className="text-6xl font-extrabold text-center my-12">BoliUAM</h1>
-        {trimestres.map((trimestre, index) => {
+      <main className=" flex flex-col">
+        <h1 className="pt-36 text-center text-6xl font-extrabold">BoliUAM</h1>
+        {trimesters.map((trimester, index) => {
           return (
-            <div key={index + trimestre[0].trimestre} className="text-center">
-              <h2 className="text-xl font-bold m-4">
-                Trimestre {trimestre[0].trimestre}
-              </h2>
-              <div className="grid grid-cols-1 gap-8 xl:grid-cols-3 2xl:grid-cols-4">
-                {trimestre.map((uea, index) => {
-                  return (
-                    <Card
-                      name={uea.uea}
-                      id={uea.id}
-                      credits={uea.credits}
-                      type={uea.type}
-                      key={index + uea.id}
-                      trimester={uea.trimestre}
-                      seriation={uea.seriation}
-                    />
-                  );
-                })}
-              </div>
+            <div
+              key={trimester[0].id + index}
+              className="grid my-4 max-w-[1400px] mx-auto grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+            >
+              {trimester.map((uea) => {
+                return <UeaCard key={uea.id} uea={uea} />;
+              })}
             </div>
           );
         })}
-      </div>
-    </>
+      </main>
+    </ThemeProvider>
   );
 }
 
