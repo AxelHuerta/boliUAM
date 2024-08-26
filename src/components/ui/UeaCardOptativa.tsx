@@ -49,7 +49,7 @@ function UeaCardOptativa(props: Readonly<Props>) {
   const [isApprovedForPushButton, setIsApprovedForPushButton] = useState(false);
   const [optativeUea, setOptativeUea] = useState({
     id: "",
-    name: "",
+    uea: "",
     credits: 0,
   });
 
@@ -72,7 +72,21 @@ function UeaCardOptativa(props: Readonly<Props>) {
    * Chech if the UEA is already approved.
    */
   const checkIfUeaIsApproved = () => {
-    return approvedUeas.includes(id);
+    const ueaTemp: OptativeUea | undefined = optativeUeas.find(
+      (approvedUea) => approvedUea.storeTo === id
+    );
+
+    if (ueaTemp) {
+      setOptativeUea({
+        id: ueaTemp.id,
+        uea: ueaTemp.uea,
+        credits: ueaTemp.credits,
+      });
+
+      return true;
+    }
+
+    return false;
   };
 
   /**
@@ -101,7 +115,7 @@ function UeaCardOptativa(props: Readonly<Props>) {
   const saveUeaData = () => {
     const ueaTemp = {
       id: optativeUea.id,
-      uea: optativeUea.name,
+      uea: optativeUea.uea,
       credits: optativeUea.credits,
       storeTo: id,
     };
@@ -116,7 +130,7 @@ function UeaCardOptativa(props: Readonly<Props>) {
   if (credits === -1) return <div></div>;
 
   // TODO: refactor this
-  if (true) {
+  if (!isApproved) {
     return (
       <Card className={`w-80 ${isApproved ? "border-2 border-green-600" : ""}`}>
         <CardHeader>
@@ -152,12 +166,12 @@ function UeaCardOptativa(props: Readonly<Props>) {
                       ></Input>
                     </div>
                     <div className="flex items-center my-4">
-                      <label htmlFor="name" className="mr-2 text-lg w-[120px]">
+                      <label htmlFor="uea" className="mr-2 text-lg w-[120px]">
                         Nombre:
                       </label>
                       <Input
                         type="text"
-                        name="name"
+                        name="uea"
                         placeholder="Temas Selectos de Ingeniería de Software"
                         onChange={handleUeaData}
                       ></Input>
@@ -195,7 +209,7 @@ function UeaCardOptativa(props: Readonly<Props>) {
         <CardHeader>
           <CardDescription className="flex justify-between items-center">
             <div>
-              clave: <span className="font-bold">{id}</span>
+              clave: <span className="font-bold">{optativeUea.id}</span>
             </div>
             <Button variant="ghost" onClick={copyToClipboard}>
               {isCopied ? <CopyCheck size={18} /> : <Copy size={18} />}
@@ -210,7 +224,7 @@ function UeaCardOptativa(props: Readonly<Props>) {
         <CardFooter>
           <CardDescription className="flex justify-between items-center w-full">
             <div>
-              créditos: <span className="font-bold">{credits}</span>
+              créditos: <span className="font-bold">{optativeUea.credits}</span>
             </div>
             <div>
               <Button

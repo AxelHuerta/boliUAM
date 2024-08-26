@@ -1,13 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-type OptativeUea = {
-  id: string;
-  uea: string;
-  credits: number;
-  storeTo: string;
-};
-
 type State = {
   approvedUeas: string[];
   totalCredits: number;
