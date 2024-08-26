@@ -35,11 +35,23 @@ type Props = {
 
 function UeaCardOptativa(props: Readonly<Props>) {
   const { id, uea, credits } = props.uea;
-  const { approvedUeas, setApprovedUeas, totalCredits, setTotalCredits } =
-    useUeas((state) => state);
+
+  const {
+    approvedUeas,
+    setApprovedUeas,
+    totalCredits,
+    setTotalCredits,
+    optativeUeas,
+    setOptativeUeas,
+  } = useUeas((state) => state);
   const [isCopied, setIsCopied] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
   const [isApprovedForPushButton, setIsApprovedForPushButton] = useState(false);
+  const [optativeUea, setOptativeUea] = useState({
+    id: "",
+    name: "",
+    credits: 0,
+  });
 
   /**
    * Copy 'clave' (id) to clipboard.
@@ -81,6 +93,22 @@ function UeaCardOptativa(props: Readonly<Props>) {
     setIsApproved(!isApproved);
   };
 
+  const handleUeaData = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setOptativeUea({ ...optativeUea, [name]: value });
+  };
+
+  const saveUeaData = () => {
+    const ueaTemp = {
+      id: optativeUea.id,
+      uea: optativeUea.name,
+      credits: optativeUea.credits,
+      storeTo: id,
+    };
+
+    setOptativeUeas([...optativeUeas, ueaTemp]);
+  };
+
   useEffect(() => {
     setIsApproved(checkIfUeaIsApproved());
   }, []);
@@ -113,24 +141,43 @@ function UeaCardOptativa(props: Readonly<Props>) {
                   <DialogTitle className="mb-4">UEA {uea}</DialogTitle>
                   <DialogDescription>
                     <div className="flex items-center my-4">
-                      <label className="mr-2 text-lg w-[120px]">Clave:</label>
-                      <Input type="number" placeholder="1234567"></Input>
-                    </div>
-                    <div className="flex items-center my-4">
-                      <label className="mr-2 text-lg w-[120px]">Nombre:</label>
+                      <label htmlFor="id" className="mr-2 text-lg w-[120px]">
+                        Clave:
+                      </label>
                       <Input
-                        type="text"
-                        placeholder="Temas Selectos de Ingeniería de Software"
+                        type="number"
+                        name="id"
+                        placeholder="1234567"
+                        onChange={handleUeaData}
                       ></Input>
                     </div>
                     <div className="flex items-center my-4">
-                      <label className="mr-2 text-lg w-[120px]">
+                      <label htmlFor="name" className="mr-2 text-lg w-[120px]">
+                        Nombre:
+                      </label>
+                      <Input
+                        type="text"
+                        name="name"
+                        placeholder="Temas Selectos de Ingeniería de Software"
+                        onChange={handleUeaData}
+                      ></Input>
+                    </div>
+                    <div className="flex items-center my-4">
+                      <label
+                        htmlFor="credits"
+                        className="mr-2 text-lg w-[120px]"
+                      >
                         Créditos:
                       </label>
-                      <Input type="number" placeholder="11"></Input>
+                      <Input
+                        type="number"
+                        name="credits"
+                        placeholder="11"
+                        onChange={handleUeaData}
+                      ></Input>
                     </div>
                     <div className="flex justify-end">
-                      <Button>Agregar UEA</Button>
+                      <Button onClick={saveUeaData}>Agregar UEA</Button>
                     </div>
                   </DialogDescription>
                 </DialogHeader>

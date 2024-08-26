@@ -1,14 +1,23 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+type OptativeUea = {
+  id: string;
+  uea: string;
+  credits: number;
+  storeTo: string;
+};
+
 type State = {
   approvedUeas: string[];
   totalCredits: number;
+  optativeUeas: OptativeUea[];
 };
 
 type Actions = {
   setApprovedUeas: (ueas: string[]) => void;
   setTotalCredits: (credits: number) => void;
+  setOptativeUeas: (optatives: OptativeUea[]) => void;
 };
 
 export const useUeas = create(
@@ -16,6 +25,7 @@ export const useUeas = create(
     (set) => ({
       approvedUeas: [],
       totalCredits: 0,
+      optativeUeas: [],
 
       setApprovedUeas: (ueas: string[]) =>
         set(() => ({
@@ -24,6 +34,10 @@ export const useUeas = create(
       setTotalCredits: (credits: number) =>
         set(() => ({
           totalCredits: credits,
+        })),
+      setOptativeUeas: (optatives: OptativeUea[]) =>
+        set(() => ({
+          optativeUeas: optatives,
         })),
     }),
     { name: "ueasState" }
