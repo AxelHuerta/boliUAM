@@ -19,7 +19,6 @@ import {
 } from "./dialog";
 
 import { Copy, CopyCheck } from "lucide-react";
-import ConfettiExplosion from "react-confetti-explosion";
 import { Input } from "./input";
 
 type Props = {
@@ -46,7 +45,6 @@ function UeaCardOptativa(props: Readonly<Props>) {
   } = useUeas((state) => state);
   const [isCopied, setIsCopied] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
-  const [isApprovedForPushButton, setIsApprovedForPushButton] = useState(false);
   const [optativeUea, setOptativeUea] = useState({
     id: "",
     uea: "",
@@ -96,12 +94,10 @@ function UeaCardOptativa(props: Readonly<Props>) {
     if (!isApproved) {
       setApprovedUeas([...approvedUeas, id]);
       setTotalCredits(totalCredits + credits);
-      setIsApprovedForPushButton(true);
     } else {
       // TODO: refactor this
       setApprovedUeas(approvedUeas.filter((approvedUea) => approvedUea !== id));
       setTotalCredits(totalCredits - credits);
-      setIsApprovedForPushButton(false);
     }
 
     setIsApproved(!isApproved);
@@ -121,6 +117,7 @@ function UeaCardOptativa(props: Readonly<Props>) {
     };
 
     setOptativeUeas([...optativeUeas, ueaTemp]);
+    setIsApproved(true);
   };
 
   useEffect(() => {
@@ -130,6 +127,7 @@ function UeaCardOptativa(props: Readonly<Props>) {
   if (credits === -1) return <div></div>;
 
   // TODO: refactor this
+  // TODO: add confetti explosion
   if (!isApproved) {
     return (
       <Card className={`w-80 ${isApproved ? "border-2 border-green-600" : ""}`}>
@@ -204,49 +202,38 @@ function UeaCardOptativa(props: Readonly<Props>) {
   }
 
   return (
-    <>
-      <Card className={`w-80 ${isApproved ? "border-2 border-green-600" : ""}`}>
-        <CardHeader>
-          <CardDescription className="flex justify-between items-center">
-            <div>
-              clave: <span className="font-bold">{optativeUea.id}</span>
-            </div>
-            <Button variant="ghost" onClick={copyToClipboard}>
-              {isCopied ? <CopyCheck size={18} /> : <Copy size={18} />}
+    <Card className={`w-80 ${isApproved ? "border-2 border-green-600" : ""}`}>
+      <CardHeader>
+        <CardDescription className="flex justify-between items-center">
+          <div>
+            clave: <span className="font-bold">{optativeUea.id}</span>
+          </div>
+          <Button variant="ghost" onClick={copyToClipboard}>
+            {isCopied ? <CopyCheck size={18} /> : <Copy size={18} />}
+          </Button>
+        </CardDescription>
+      </CardHeader>
+
+      <CardContent className="min-h-[8em] flex items-center">
+        <CardTitle className="capitalize">{optativeUea.uea}</CardTitle>
+      </CardContent>
+
+      <CardFooter>
+        <CardDescription className="flex justify-between items-center w-full">
+          <div>
+            créditos: <span className="font-bold">{optativeUea.credits}</span>
+          </div>
+          <div>
+            <Button
+              variant={isApproved ? "secondary" : "default"}
+              onClick={handlerUeaState}
+            >
+              {isApproved ? "Desaprobar" : "Aprobar"}
             </Button>
-          </CardDescription>
-        </CardHeader>
-
-        <CardContent className="min-h-[8em] flex items-center">
-          <CardTitle className="capitalize">{uea}</CardTitle>
-        </CardContent>
-
-        <CardFooter>
-          <CardDescription className="flex justify-between items-center w-full">
-            <div>
-              créditos: <span className="font-bold">{optativeUea.credits}</span>
-            </div>
-            <div>
-              <Button
-                variant={isApproved ? "secondary" : "default"}
-                onClick={handlerUeaState}
-              >
-                {isApproved ? "Desaprobar" : "Aprobar"}
-              </Button>
-            </div>
-          </CardDescription>
-        </CardFooter>
-      </Card>
-
-      {/* Confetti explotion */}
-      {isApprovedForPushButton && (
-        <ConfettiExplosion
-          className="fixed left-0 top-0"
-          width={5000}
-          duration={1500}
-        />
-      )}
-    </>
+          </div>
+        </CardDescription>
+      </CardFooter>
+    </Card>
   );
 }
 
