@@ -95,8 +95,14 @@ function UeaCardOptativa(props: Readonly<Props>) {
       setApprovedUeas([...approvedUeas, id]);
       setTotalCredits(totalCredits + credits);
     } else {
+      console.log("Si entro");
+      console.log(approvedUeas);
+      console.log(id);
       // TODO: refactor this
-      setApprovedUeas(approvedUeas.filter((approvedUea) => approvedUea !== id));
+      // setApprovedUeas(approvedUeas.filter((approvedUea) => approvedUea !== id));
+      setOptativeUeas(
+        optativeUeas.filter((approvedUea) => approvedUea.storeTo !== id)
+      );
       setTotalCredits(totalCredits - credits);
     }
 
@@ -117,6 +123,7 @@ function UeaCardOptativa(props: Readonly<Props>) {
     };
 
     setOptativeUeas([...optativeUeas, ueaTemp]);
+    setTotalCredits(totalCredits + Number(optativeUea.credits));
     setIsApproved(true);
   };
 
