@@ -25,6 +25,7 @@ type Props = {
   uea: {
     id: string;
     uea: string;
+    // TODO: Unnecessary
     credits: number;
     trimester: number;
     seriation: string[];
@@ -95,15 +96,14 @@ function UeaCardOptativa(props: Readonly<Props>) {
       setApprovedUeas([...approvedUeas, id]);
       setTotalCredits(totalCredits + credits);
     } else {
-      console.log("Si entro");
-      console.log(approvedUeas);
-      console.log(id);
       // TODO: refactor this
-      // setApprovedUeas(approvedUeas.filter((approvedUea) => approvedUea !== id));
+      const ueaTemp = optativeUeas.find(
+        (approvedUea) => approvedUea.storeTo === id
+      );
+      setTotalCredits(totalCredits - Number(ueaTemp?.credits));
       setOptativeUeas(
         optativeUeas.filter((approvedUea) => approvedUea.storeTo !== id)
       );
-      setTotalCredits(totalCredits - credits);
     }
 
     setIsApproved(!isApproved);
@@ -221,7 +221,7 @@ function UeaCardOptativa(props: Readonly<Props>) {
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="min-h-[8em] flex items-center">
+      <CardContent className="min-h-[8em] flex items-center flex-col">
         <CardTitle className="capitalize">{optativeUea.uea}</CardTitle>
       </CardContent>
 
