@@ -10,7 +10,7 @@ export const trimesters = [
       type: "tronco",
     },
     {
-      id: "",
+      id: "01",
       trimester: 0,
       uea: "",
       credits: -1,
@@ -18,7 +18,7 @@ export const trimesters = [
       type: "tronco",
     },
     {
-      id: "",
+      id: "02",
       trimester: 0,
       uea: "",
       credits: -1,
@@ -26,7 +26,7 @@ export const trimesters = [
       type: "tronco",
     },
     {
-      id: "",
+      id: "03",
       trimester: 0,
       uea: "",
       credits: -1,
@@ -38,7 +38,7 @@ export const trimesters = [
   // trimester 1
   [
     {
-      id: "",
+      id: "10",
       trimester: 1,
       uea: "",
       credits: -1,
@@ -335,7 +335,7 @@ export const trimesters = [
       type: "tronco",
     },
     {
-      id: "",
+      id: "optativa0T9",
       trimester: 9,
       uea: "Opt. CBS/CSH I",
       credits: 8,
@@ -363,15 +363,15 @@ export const trimesters = [
   // trimester 10
   [
     {
-      id: "",
+      id: "optativa0T10",
       trimester: 10,
       uea: "optativa computación",
       credits: 11,
       seriation: [],
-      type: "optativaComputacion",
+      type: "optativa",
     },
     {
-      id: "",
+      id: "optativa1T10",
       trimester: 10,
       uea: "Opt. CBS/CSH II",
       credits: 8,
@@ -379,35 +379,35 @@ export const trimesters = [
       type: "optativa",
     },
     {
-      id: "",
+      id: "optativa2T10",
       trimester: 10,
       uea: "optativa licenciatura computación",
       credits: 8,
       seriation: [],
-      type: "optativaComputacion",
+      type: "optativa",
     },
     {
-      id: "",
+      id: "optativa3T10",
       trimester: 10,
       uea: "optativa licenciatura computación",
       credits: 8,
       seriation: [],
-      type: "optativaComputacion",
+      type: "optativa",
     },
   ],
 
   // trimester 11
   [
     {
-      id: "",
+      id: "optativa0T11",
       trimester: 11,
       uea: "optativa licenciatura computación",
       credits: 11,
       seriation: [],
-      type: "optativaComputacion",
+      type: "optativa",
     },
     {
-      id: "",
+      id: "optativa1T11",
       trimester: 11,
       uea: "Opt. CBS/CSH III",
       credits: 8,
@@ -415,15 +415,15 @@ export const trimesters = [
       type: "optativa",
     },
     {
-      id: "",
+      id: "optativa2T11",
       trimester: 11,
       uea: "optativa CBI",
       credits: 9,
       seriation: [],
-      type: "cbi",
+      type: "optativa",
     },
     {
-      id: "",
+      id: "proyecto 1",
       trimester: 11,
       uea: "proyecto de investiagación I",
       credits: 12,
@@ -435,15 +435,15 @@ export const trimesters = [
   // trimester 12
   [
     {
-      id: "",
+      id: "optativa0T12",
       trimester: 12,
       uea: "optativa licenciatura computación",
       credits: 8,
       seriation: [],
-      type: "optativaComputacion",
+      type: "optativa",
     },
     {
-      id: "",
+      id: "optativa1T12",
       trimester: 12,
       uea: "Opt. CBS/CSH IV",
       credits: 8,
@@ -451,15 +451,15 @@ export const trimesters = [
       type: "optativa",
     },
     {
-      id: "",
+      id: "optativa2T12",
       trimester: 12,
       uea: "optativa CBI",
       credits: 9,
       seriation: [],
-      type: "cbi",
+      type: "optativa",
     },
     {
-      id: "",
+      id: "proyecto 2",
       trimester: 12,
       uea: "proyecto de investiagación II",
       credits: 18,
