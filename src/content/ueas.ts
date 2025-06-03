@@ -9,42 +9,10 @@ export const trimesters = [
       seriation: [],
       type: "tronco",
     },
-    {
-      id: "01",
-      trimester: 0,
-      uea: "",
-      credits: -1,
-      seriation: [],
-      type: "tronco",
-    },
-    {
-      id: "02",
-      trimester: 0,
-      uea: "",
-      credits: -1,
-      seriation: [],
-      type: "tronco",
-    },
-    {
-      id: "03",
-      trimester: 0,
-      uea: "",
-      credits: -1,
-      seriation: [],
-      type: "tronco",
-    },
   ],
 
   // trimester 1
   [
-    {
-      id: "10",
-      trimester: 1,
-      uea: "",
-      credits: -1,
-      seriation: [],
-      type: "tronco",
-    },
     {
       id: "2130038",
       trimester: 1,
@@ -238,7 +206,7 @@ export const trimesters = [
       id: "2151115",
       trimester: 6,
       uea: "arquitectura de computadoras",
-      credits: 8,
+      credits: 10,
       seriation: ["2151104"],
       type: "computacion",
     },
