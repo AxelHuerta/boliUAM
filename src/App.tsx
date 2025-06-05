@@ -1,34 +1,93 @@
-import { ThemeProvider } from "./ThemeProvider";
-import Navbar from "./components/ui/Navbar";
-import UeaCard from "./components/ui/UeaCard";
-import UeaCardOptativa from "./components/ui/UeaCardOptativa";
+import { ModeToggle } from "./components/mode-toggle";
+import UeaCard from "./components/uea-card";
+import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
 import { trimesters } from "./content/ueas";
+import { useUeaStore } from "./store/ueas-store";
+import { ThemeProvider } from "./theme-provider";
 
 function App() {
-  return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <Navbar />
-      <main className=" flex flex-col">
-        <h1 className="pt-36 text-center text-6xl font-extrabold">BoliUAM</h1>
-        {trimesters.map((trimester, index) => {
-          return (
-            <div
-              key={trimester[0].id + index}
-              className="max-w-[1400px] mx-auto my-4 p-8"
-            >
-              <h2 className="text-3xl font-black">Trimestre {index}</h2>
-              <div className="grid my-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {trimester.map((uea) => {
-                  if (uea.type === "optativa") {
-                    return <UeaCardOptativa key={uea.id} uea={uea} />;
-                  }
+  const ueasStore = useUeaStore((state) => state.ueas);
+  // const approvedCredits = ueasStore
+  //   .filter((uea) => uea.status === "approved")
+  //   .reduce((sum, uea) => {
+  //     const foundUea = trimesters
+  //       .flat()
+  //       .find((trimesterUea) => trimesterUea.id === uea.id);
+  //     return sum + (foundUea?.credits || 0);
+  //   }, 0);
 
-                  return <UeaCard key={uea.id} uea={uea} />;
-                })}
-              </div>
+  // const inProgressCredits = ueasStore
+  //   .filter((uea) => uea.status === "in-progress")
+  //   .reduce((sum, uea) => {
+  //     const foundUea = trimesters
+  //       .flat()
+  //       .find((trimesterUea) => trimesterUea.id === uea.id);
+  //     return sum + (foundUea?.credits || 0);
+  //   }, 0);
+
+  let approvedCredits = 0;
+  let inProgressCredits = 0;
+
+  for (let i = 0; i < ueasStore.length; i++) {
+    if (ueasStore[i].status === "approved") {
+      approvedCredits += ueasStore[i].credits;
+    } else if (ueasStore[i].status === "in-progress") {
+      inProgressCredits += ueasStore[i].credits;
+    }
+  }
+
+  return (
+    <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+      <header className="flex w-full justify-between items-center p-4">
+        <h1 className="text-3xl font-bold">BoliUAM</h1>
+        <ModeToggle />
+      </header>
+      <main>
+        <section className="space-y-4 mx-2">
+          {/* Créditos totales */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Créditos totales</CardTitle>
+            </CardHeader>
+            <CardContent className="text-2xl font-semibold">477</CardContent>
+          </Card>
+
+          {/* Créditos completados */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Créditos completados</CardTitle>
+            </CardHeader>
+            <CardContent className="text-2xl font-semibold">
+              {approvedCredits}
+            </CardContent>
+          </Card>
+
+          {/* Créditos en curso */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Créditos en curso</CardTitle>
+            </CardHeader>
+            <CardContent className="text-2xl font-semibold">
+              {inProgressCredits}
+            </CardContent>
+          </Card>
+        </section>
+
+        {trimesters.map((trimester) => (
+          <section
+            key={trimester[0].trimester}
+            className="flex flex-col md:m-8"
+          >
+            <h2 className="text-2xl font-semibold m-4">
+              Trimestre {trimester[0].trimester}
+            </h2>
+            <div className="flex flex-wrap gap-4 p-4 justify-center sm:justify-start">
+              {trimester.map((uea) => (
+                <UeaCard key={uea.id} uea={uea} />
+              ))}
             </div>
-          );
-        })}
+          </section>
+        ))}
       </main>
     </ThemeProvider>
   );
