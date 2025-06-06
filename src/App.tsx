@@ -1,5 +1,6 @@
 import { ModeToggle } from "./components/mode-toggle";
 import UeaCard from "./components/uea-card";
+import UeaOptativaCard from "./components/uea-otativa-card";
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
 import { trimesters } from "./content/ueas";
 import { useUeaStore } from "./store/ueas-store";
@@ -82,9 +83,15 @@ function App() {
               Trimestre {trimester[0].trimester}
             </h2>
             <div className="flex flex-wrap gap-4 p-4 justify-center sm:justify-start">
-              {trimester.map((uea) => (
-                <UeaCard key={uea.id} uea={uea} />
-              ))}
+              {trimester.map((uea) => {
+                if (uea.id.includes("optativa")) {
+                  return (
+                    <UeaOptativaCard key={uea.id} id={uea.id} name={uea.name} />
+                  );
+                }
+
+                return <UeaCard key={uea.id} uea={uea} />;
+              })}
             </div>
           </section>
         ))}
