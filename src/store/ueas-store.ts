@@ -5,6 +5,10 @@ interface Register {
   id: string;
   status: string;
   credits: number;
+  register?: {
+    id: string;
+    name: string;
+  };
 }
 
 interface UeaState {

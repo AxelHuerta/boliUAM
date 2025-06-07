@@ -8,23 +8,6 @@ import { ThemeProvider } from "./theme-provider";
 
 function App() {
   const ueasStore = useUeaStore((state) => state.ueas);
-  // const approvedCredits = ueasStore
-  //   .filter((uea) => uea.status === "approved")
-  //   .reduce((sum, uea) => {
-  //     const foundUea = trimesters
-  //       .flat()
-  //       .find((trimesterUea) => trimesterUea.id === uea.id);
-  //     return sum + (foundUea?.credits || 0);
-  //   }, 0);
-
-  // const inProgressCredits = ueasStore
-  //   .filter((uea) => uea.status === "in-progress")
-  //   .reduce((sum, uea) => {
-  //     const foundUea = trimesters
-  //       .flat()
-  //       .find((trimesterUea) => trimesterUea.id === uea.id);
-  //     return sum + (foundUea?.credits || 0);
-  //   }, 0);
 
   let approvedCredits = 0;
   let inProgressCredits = 0;
