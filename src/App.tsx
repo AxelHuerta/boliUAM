@@ -20,6 +20,8 @@ function App() {
     }
   }
 
+  const creditsPercentage = (approvedCredits * 100) / 477;
+
   return (
     <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
       <header className="flex w-full justify-between items-center p-4">
@@ -27,9 +29,9 @@ function App() {
         <ModeToggle />
       </header>
       <main>
-        <section className="space-y-4 mx-2">
+        <section className="m-2 p-2 space-y-4 sm:flex gap-4">
           {/* Créditos totales */}
-          <Card>
+          <Card className="w-full h-[160px]">
             <CardHeader>
               <CardTitle>Créditos totales</CardTitle>
             </CardHeader>
@@ -37,17 +39,21 @@ function App() {
           </Card>
 
           {/* Créditos completados */}
-          <Card>
+          <Card className="w-full h-[160px]">
             <CardHeader>
               <CardTitle>Créditos completados</CardTitle>
             </CardHeader>
             <CardContent className="text-2xl font-semibold">
-              {approvedCredits}
+              <p>{approvedCredits}</p>
+
+              <span className="text-sm ml-2">
+                {creditsPercentage.toFixed(2)}% del total
+              </span>
             </CardContent>
           </Card>
 
           {/* Créditos en curso */}
-          <Card>
+          <Card className="w-full h-[160px]">
             <CardHeader>
               <CardTitle>Créditos en curso</CardTitle>
             </CardHeader>
@@ -65,7 +71,7 @@ function App() {
             <h2 className="text-2xl font-semibold m-4">
               Trimestre {trimester[0].trimester}
             </h2>
-            <div className="flex flex-wrap gap-4 p-4 justify-center sm:justify-start">
+            <div className="mx-4 grid gap-4 sm:grid-cols-4">
               {trimester.map((uea) => {
                 if (uea.id.includes("optativa")) {
                   return (
