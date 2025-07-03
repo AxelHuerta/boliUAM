@@ -30,7 +30,6 @@ const statusValues = [
 ];
 
 export default function UeaCard({ uea }: Props) {
-  // Destructure the UEA properties
   const { id, name, credits } = uea;
   const ueas = useUeaStore((state) => state.ueas);
 

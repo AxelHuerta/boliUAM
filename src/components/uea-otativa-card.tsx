@@ -78,9 +78,9 @@ export default function UeaOptativaCard({ id, name }: Props) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      registerId: "",
-      registerName: "",
-      registerCredits: undefined,
+      registerId: registeredUea ? registeredUea.register?.id : "",
+      registerName: registeredUea ? registeredUea.register?.name : "",
+      registerCredits: registeredUea ? registeredUea.credits : undefined,
     },
   });
 
