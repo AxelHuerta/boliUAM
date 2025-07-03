@@ -1,4 +1,10 @@
-import { CircleFadingPlus, Edit } from "lucide-react";
+import {
+  CircleCheckBig,
+  CircleDashed,
+  CircleFadingPlus,
+  Clock,
+  Edit,
+} from "lucide-react";
 import {
   Card,
   CardContent,
@@ -120,7 +126,34 @@ export default function UeaOptativaCard({ id, name }: Props) {
               <CardTitle className="text-xl">{uea?.register?.name}</CardTitle>
               <CardDescription>{name}</CardDescription>
             </div>
-            <Badge>{uea?.status}</Badge>
+            <Badge
+              variant={
+                status === "pending"
+                  ? "outline"
+                  : status === "in-progress"
+                  ? "secondary"
+                  : "default"
+              }
+            >
+              {status === "pending" && (
+                <>
+                  <CircleDashed />
+                  <span>Pendiente</span>
+                </>
+              )}
+              {status === "in-progress" && (
+                <>
+                  <Clock />
+                  <span> En curso</span>
+                </>
+              )}
+              {status === "approved" && (
+                <>
+                  <CircleCheckBig />
+                  <span>¡Aprobada!</span>
+                </>
+              )}
+            </Badge>
           </div>
         </CardHeader>
         <CardContent>

@@ -1,12 +1,6 @@
 import type { UEA } from "@/interfaces/uea";
 import { Button } from "@/components/ui/button";
-import {
-  CircleCheckBig,
-  CircleDashed,
-  Clock,
-  Copy,
-  CopyCheck,
-} from "lucide-react";
+import { Copy, CopyCheck } from "lucide-react";
 import { useUeaStore } from "@/store/ueas-store";
 import { useState } from "react";
 import {
@@ -23,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Badge } from "./ui/badge";
+import BadgeStatus from "./badge-status";
 
 interface Props {
   uea: UEA;
@@ -41,7 +35,7 @@ export default function UeaCard({ uea }: Props) {
   const ueas = useUeaStore((state) => state.ueas);
 
   const [isCopied, setIsCopied] = useState(false);
-  const [status, setStatus] = useState(getStatus());
+  const [status, setStatus] = useState<string>(getStatus());
 
   const updatedUea = useUeaStore((state) => state.updateStatus);
 
@@ -83,35 +77,7 @@ export default function UeaCard({ uea }: Props) {
             Clave: <span className="font-bold">{id}</span>
           </p>
         </div>
-        <Badge
-          className=""
-          variant={
-            status === "pending"
-              ? "outline"
-              : status === "in-progress"
-              ? "secondary"
-              : "default"
-          }
-        >
-          {status === "pending" && (
-            <>
-              <CircleDashed />
-              <span>Pendiente</span>
-            </>
-          )}
-          {status === "in-progress" && (
-            <>
-              <Clock />
-              <span> En curso</span>
-            </>
-          )}
-          {status === "approved" && (
-            <>
-              <CircleCheckBig />
-              <span>¡Aprobada!</span>
-            </>
-          )}
-        </Badge>
+        <BadgeStatus status={status} />
       </CardHeader>
       <CardContent>
         <CardTitle className="text-xl capitalize">{name}</CardTitle>
