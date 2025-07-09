@@ -43,14 +43,13 @@ import { z } from "zod";
 import { useUeaStore } from "@/store/ueas-store";
 import { Badge } from "./ui/badge";
 import { useState } from "react";
-import { DialogClose } from "@radix-ui/react-dialog";
 
 const formSchema = z.object({
   registerId: z.string().length(7, {
     message: "La clave debe tener 7 caracteres.",
   }),
-  registerName: z.string({
-    required_error: "Debe ingresar un nombre.",
+  registerName: z.string().min(1, {
+    message: "Debe ingresar un nombre válido para la UEA.",
   }),
   registerCredits: z.number().min(1, {
     message: "Debe ingresar un valor válido de créditos.",
@@ -75,6 +74,7 @@ export default function UeaOptativaCard({ id, name }: Props) {
   const registeredUea = ueasStore.find((uea) => uea.id === id);
 
   const [status, setStatus] = useState(getStatus());
+  const [open, setOpen] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -115,6 +115,7 @@ export default function UeaOptativaCard({ id, name }: Props) {
     };
 
     updateStatus(newUea);
+    setOpen(false);
   }
 
   if (ueasStore.some((uea) => uea.id === id)) {
@@ -163,7 +164,7 @@ export default function UeaOptativaCard({ id, name }: Props) {
               Créditos: <span>{uea?.credits}</span>
             </p>
             {/* Dialog */}
-            <Dialog>
+            <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger>
                 <Edit className="h-6 w-6 cursor-pointer" />
               </DialogTrigger>
@@ -242,9 +243,7 @@ export default function UeaOptativaCard({ id, name }: Props) {
                         />
                       </div>
                       <div className="flex justify-end">
-                        <DialogClose asChild about="">
-                          <Button type="submit">Registrar</Button>
-                        </DialogClose>
+                        <Button type="submit">Registrar</Button>
                       </div>
                     </form>
                   </Form>
