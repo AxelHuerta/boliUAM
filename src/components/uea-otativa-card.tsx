@@ -43,6 +43,7 @@ import { z } from "zod";
 import { useUeaStore } from "@/store/ueas-store";
 import { Badge } from "./ui/badge";
 import { useState } from "react";
+import { DialogClose } from "@radix-ui/react-dialog";
 
 const formSchema = z.object({
   registerId: z.string().length(7, {
@@ -241,7 +242,9 @@ export default function UeaOptativaCard({ id, name }: Props) {
                         />
                       </div>
                       <div className="flex justify-end">
-                        <Button type="submit">Registrar</Button>
+                        <DialogClose asChild about="">
+                          <Button type="submit">Registrar</Button>
+                        </DialogClose>
                       </div>
                     </form>
                   </Form>

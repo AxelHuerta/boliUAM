@@ -71,7 +71,7 @@ function App() {
             <h2 className="text-2xl font-semibold m-4">
               Trimestre {trimester[0].trimester}
             </h2>
-            <div className="mx-4 grid gap-4 sm:grid-cols-4">
+            <div className="mx-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {trimester.map((uea) => {
                 if (uea.id.includes("optativa")) {
                   return (
