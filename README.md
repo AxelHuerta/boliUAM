@@ -1,30 +1,21 @@
-# React + TypeScript + Vite
+# BoliUAM - Boligrama Licenciatura en Computación UAM Iztapalapa
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+BoliUAM es una aplicación web interactiva que permite a los estudiantes de la Licenciatura en Computación de la Universidad Autónoma Metropolitana (UAM) Iztapalapa visualizar y gestionar su progreso académico a través de un boligrama digital.
 
-Currently, two official plugins are available:
+## 🎓 Acerca del Proyecto
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Esta aplicación permite:
 
-## Expanding the ESLint configuration
+- ✅ Visualizar el plan de estudios completo por trimestres
+- 📊 Realizar seguimiento del progreso académico
+- 🎯 Calcular créditos completados y porcentaje de avance
+- 🌓 Interfaz adaptativa con modo claro/oscuro
+- 📱 Diseño responsivo para dispositivos móviles
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## 🛠️ Tecnologías
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- **React 19** con TypeScript
+- **Vite** para desarrollo y build
+- **Tailwind CSS** para estilos
+- **shadcn/ui** para componentes
+- **Zustand** para manejo de estado
