@@ -24,27 +24,15 @@ function App() {
 
   return (
     <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-      <div className="min-h-screen w-full bg-black relative">
-        {/* Dark Noise Colored Background */}
-        <div
-          className="absolute inset-0 z-0"
-          style={{
-            background: "#000000",
-            backgroundImage: `
-        radial-gradient(circle at 1px 1px, rgba(139, 92, 246, 0.2) 1px, transparent 0),
-        radial-gradient(circle at 1px 1px, rgba(59, 130, 246, 0.18) 1px, transparent 0),
-        radial-gradient(circle at 1px 1px, rgba(236, 72, 153, 0.15) 1px, transparent 0)
-      `,
-            backgroundSize: "20px 20px, 30px 30px, 25px 25px",
-            backgroundPosition: "0 0, 10px 10px, 15px 5px",
-          }}
-        />
+      <div className="min-h-screen w-full relative">
+        {/* Theme-aware background pattern */}
+        <div className="absolute inset-0 z-0 noise-pattern-bg" />
         <div className="relative z-10 mx-auto px-4 py-8">
-          {/* Your Content/Components */}
           <header className="flex w-full justify-between items-center p-4">
             <h1 className="text-3xl font-bold">BoliUAM</h1>
             <ModeToggle />
           </header>
+
           <main>
             <section className="m-2 p-2 space-y-4 sm:flex gap-4">
               {/* Créditos totales */}
