@@ -1,0 +1,19 @@
+{
+  "name": "BoliUAM - Boligrama Licenciatura en Computación UAM Iztapalapa",
+  "short_name": "BoliUAM", 
+  "description": "Boligrama interactivo de la Licenciatura en Computación de la UAM Iztapalapa",
+  "lang": "es-MX",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#a6e3a1",
+  "categories": ["education", "productivity"],
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ]
+}
