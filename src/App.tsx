@@ -7,9 +7,20 @@ import { SEOConfigs } from "./config/seo-config";
 import { trimesters } from "./content/ueas";
 import { useUeaStore } from "./store/ueas-store";
 import { ThemeProvider } from "./theme-provider";
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import { Login } from "./components/Login";
 
-function App() {
+function AppContent() {
+  const { user, loading, logout } = useAuth();
   const ueasStore = useUeaStore((state) => state.ueas);
+
+  if (loading) {
+    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+  }
+
+  if (!user) {
+    return <Login />;
+  }
 
   let approvedCredits = 0;
   let inProgressCredits = 0;
@@ -25,9 +36,9 @@ function App() {
   const creditsPercentage = (approvedCredits * 100) / 477;
 
   return (
-    <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-      <SEO {...SEOConfigs.home} />
+    
       <div className="min-h-screen w-full relative">
+        <SEO {...SEOConfigs.home} />
         {/* Theme-aware background pattern */}
         <div className="absolute inset-0 z-0 noise-pattern-bg" />
         <div className="relative z-10 mx-auto px-4 py-8">
@@ -38,7 +49,13 @@ function App() {
                 Boligrama - Licenciatura en Computación UAM Iztapalapa
               </p>
             </div>
-            <ModeToggle />
+            <div className="flex items-center gap-4">
+               <div className="flex items-center gap-2">
+                {user.photoURL && <img src={user.photoURL} alt={user.displayName || "User"} className="w-8 h-8 rounded-full" />}
+                <button onClick={logout} className="text-sm text-red-500 hover:underline">Logout</button>
+               </div>
+               <ModeToggle />
+            </div>
           </header>
 
           <main role="main">
@@ -146,6 +163,16 @@ function App() {
           </main>
         </div>
       </div>
+    
+  );
+}
+
+function App() {
+  return (
+    <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
     </ThemeProvider>
   );
 }
