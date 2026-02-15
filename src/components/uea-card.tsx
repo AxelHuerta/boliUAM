@@ -34,9 +34,10 @@ export default function UeaCard({ uea }: Props) {
   const ueas = useUeaStore((state) => state.ueas);
 
   const [isCopied, setIsCopied] = useState(false);
-  const [status, setStatus] = useState<string>(getStatus());
+  // Derived state from store, ensuring reactivity
+  const currentStatus = ueas.find((u) => u.id === id)?.status || "pending";
 
-  const updatedUea = useUeaStore((state) => state.updateStatus);
+  const updateStatus = useUeaStore((state) => state.updateStatus);
 
   const copyToClipboard = async () => {
     try {
@@ -51,18 +52,11 @@ export default function UeaCard({ uea }: Props) {
   };
 
   function handleSelectChange(value: string) {
-    updatedUea({
+    updateStatus({
       id,
       status: value,
       credits,
     });
-
-    setStatus(value);
-  }
-
-  function getStatus() {
-    const ueaStatus = ueas.find((uea) => uea.id === id);
-    return ueaStatus ? ueaStatus.status : "pending";
   }
 
   return (
@@ -76,7 +70,7 @@ export default function UeaCard({ uea }: Props) {
             Clave: <span className="font-bold">{id}</span>
           </p>
         </div>
-        <BadgeStatus status={status} />
+        <BadgeStatus status={currentStatus} />
       </CardHeader>
       <CardContent>
         <CardTitle className="text-xl capitalize">{name}</CardTitle>
@@ -87,10 +81,8 @@ export default function UeaCard({ uea }: Props) {
             créditos: <span className="font-bold">{credits}</span>
           </div>
           <Select
-            onValueChange={(value) => {
-              handleSelectChange(value);
-            }}
-            defaultValue={status}
+            onValueChange={handleSelectChange}
+            value={currentStatus}
           >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Estado de la UEA" />

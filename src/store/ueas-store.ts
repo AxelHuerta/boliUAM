@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-interface Register {
+export interface Register {
   id: string;
   status: string;
   credits: number;
@@ -14,6 +14,7 @@ interface Register {
 interface UeaState {
   ueas: Register[];
   updateStatus: (uea: Register) => void;
+  setUeas: (ueas: Register[]) => void;
 }
 
 function handleUpdateUeas(uea: Register, currentUeas: Register[]): Register[] {
@@ -37,6 +38,7 @@ export const useUeaStore = create<UeaState>()(
         set((state) => ({
           ueas: handleUpdateUeas(uea, state.ueas),
         })),
+      setUeas: (ueas) => set({ ueas }),
     }),
     {
       name: "uea-storage",
