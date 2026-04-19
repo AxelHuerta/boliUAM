@@ -25,13 +25,13 @@ export function useFirestoreSync() {
         if (docSnap.exists()) {
           const data = docSnap.data();
           if (data.ueas && Array.isArray(data.ueas)) {
-             setUeas(data.ueas as Register[]);
+            setUeas(data.ueas as Register[]);
           }
         } else {
-            // New user in firestore, upload local if there is any
-            if (ueas.length > 0) {
-                await setDoc(userDocRef, { ueas });
-            }
+          // New user in firestore, upload local if there is any
+          if (ueas.length > 0) {
+            await setDoc(userDocRef, { ueas });
+          }
         }
         setIsSynced(true);
       } catch (error) {
@@ -44,22 +44,22 @@ export function useFirestoreSync() {
 
   // Effect to sync TO Firestore on changes
   useEffect(() => {
-      if (!user || !isSynced) return;
-      
-      const syncToFirestore = async () => {
-          try {
-             const userDocRef = doc(db, "users", user.uid);
-             await setDoc(userDocRef, { ueas }, { merge: true });
-          } catch (error) {
-              console.error("Error syncing to Firestore:", error);
-          }
-      };
-      
-      const timeoutId = setTimeout(() => {
-          syncToFirestore();
-      }, 1000); 
+    if (!user || !isSynced) return;
 
-      return () => clearTimeout(timeoutId);
+    const syncToFirestore = async () => {
+      try {
+        const userDocRef = doc(db, "users", user.uid);
+        await setDoc(userDocRef, { ueas }, { merge: true });
+      } catch (error) {
+        console.error("Error syncing to Firestore:", error);
+      }
+    };
 
-  }, [ueas, user, isSynced]); 
+    const timeoutId = setTimeout(() => {
+      syncToFirestore();
+    }, 1000);
+
+    return () => clearTimeout(timeoutId);
+
+  }, [ueas, user, isSynced]);
 }
