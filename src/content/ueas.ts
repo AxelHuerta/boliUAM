@@ -51,7 +51,7 @@ export const trimesters = [
     },
     {
       id: "2130039",
-      trimester: 1,
+      trimester: 2,
       name: "cálculo integral",
       credits: 11,
       seriation: ["2130038"],
@@ -263,7 +263,7 @@ export const trimesters = [
       trimester: 8,
       name: "inglés intermedio II",
       credits: 10,
-      seriation: ["2155064"],
+      seriation: ["2255064"],
       type: "tronco",
     },
     {
@@ -299,7 +299,7 @@ export const trimesters = [
       trimester: 9,
       name: "inglés intermedio III",
       credits: 10,
-      seriation: ["2155065"],
+      seriation: ["2255065"],
       type: "tronco",
     },
     {
@@ -431,7 +431,7 @@ export const trimesters = [
       trimester: 12,
       name: "proyecto de investiagación II",
       credits: 18,
-      seriation: ["proyecto de investiagación I"],
+      seriation: ["proyecto 1"],
       type: "proyecto",
     },
   ],
