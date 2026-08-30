@@ -42,6 +42,10 @@
   --bg-pattern-1: var(--pattern-1);
   --bg-pattern-2: var(--pattern-2);
   --bg-pattern-3: var(--pattern-3);
+  --color-category-tronco: var(--category-tronco);
+  --color-category-computacion: var(--category-computacion);
+  --color-category-optativa: var(--category-optativa);
+  --color-category-proyecto: var(--category-proyecto);
 }
 
 :root {
@@ -80,6 +84,10 @@
   --pattern-1: rgba(139, 92, 246, 0.1);
   --pattern-2: rgba(59, 130, 246, 0.08);
   --pattern-3: rgba(236, 72, 153, 0.06);
+  --category-tronco: oklch(0.646 0.222 41.116);
+  --category-computacion: oklch(0.6 0.15 240);
+  --category-optativa: oklch(0.6 0.25 290);
+  --category-proyecto: oklch(0.63 0.17 140);
 }
 
 .dark {
@@ -117,6 +125,10 @@
   --pattern-1: rgba(139, 92, 246, 0.3);
   --pattern-2: rgba(59, 130, 246, 0.25);
   --pattern-3: rgba(236, 72, 153, 0.2);
+  --category-tronco: oklch(0.646 0.222 41.116);
+  --category-computacion: oklch(0.7 0.18 240);
+  --category-optativa: oklch(0.7 0.22 290);
+  --category-proyecto: oklch(0.7 0.19 140);
 }
 
 @layer base {

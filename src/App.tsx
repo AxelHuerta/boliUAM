@@ -3,12 +3,14 @@ import { SEO } from "./components/seo";
 import UeaCard from "./components/uea-card";
 import UeaOptativaCard from "./components/uea-otativa-card";
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
+import { CategoryLegend } from "./components/category-legend";
 import { SEOConfigs } from "./config/seo-config";
 import { trimesters } from "./content/ueas";
 import { useUeaStore } from "./store/ueas-store";
 import { ThemeProvider } from "./theme-provider";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { useFirestoreSync } from "./hooks/use-firestore-sync";
+import { calculateProgress, getTotalCredits } from "./lib/progress-calc";
 import { Github } from "lucide-react";
 import {
   DropdownMenu,
@@ -20,23 +22,20 @@ import {
 
 function AppContent() {
   const { user, loading, logout, signInWithGithub } = useAuth();
-  const ueasStore = useUeaStore((state) => state.ueas);
 
   // Sync data with Firestore if user is logged in
   useFirestoreSync();
 
-  let approvedCredits = 0;
-  let inProgressCredits = 0;
+  const {
+    approvedCredits,
+    inProgressCredits,
+    approvedCount,
+    inProgressCount,
+    totalCount,
+    creditsPercentage,
+  } = calculateProgress();
 
-  for (let i = 0; i < ueasStore.length; i++) {
-    if (ueasStore[i].status === "approved") {
-      approvedCredits += ueasStore[i].credits;
-    } else if (ueasStore[i].status === "in-progress") {
-      inProgressCredits += ueasStore[i].credits;
-    }
-  }
-
-  const creditsPercentage = (approvedCredits * 100) / 477;
+  const TOTAL_CREDITS = getTotalCredits();
 
   if (loading) {
     return (
@@ -97,65 +96,69 @@ function AppContent() {
 
         <main role="main">
           <section
-            className="m-2 p-2 space-y-4 sm:flex gap-4"
-            aria-label="Resumen de créditos académicos"
+            className="m-2 p-2"
+            aria-label="Resumen de progreso académico"
           >
-            {/* Créditos totales */}
-            <Card
-              className="w-full h-[160px]"
-              role="region"
-              aria-labelledby="total-credits"
-            >
+            <Card role="region" aria-labelledby="progress-summary">
               <CardHeader>
-                <CardTitle id="total-credits">Créditos totales</CardTitle>
-              </CardHeader>
-              <CardContent className="text-2xl font-semibold">
-                <span aria-label="477 créditos totales de la carrera">477</span>
-              </CardContent>
-            </Card>
-
-            {/* Créditos completados */}
-            <Card
-              className="w-full h-[160px]"
-              role="region"
-              aria-labelledby="completed-credits"
-            >
-              <CardHeader>
-                <CardTitle id="completed-credits">
-                  Créditos completados
+                <CardTitle id="progress-summary">
+                  Progreso académico
                 </CardTitle>
               </CardHeader>
-              <CardContent className="text-2xl font-semibold">
-                <p aria-label={`${approvedCredits} créditos completados`}>
-                  {approvedCredits}
-                </p>
+              <CardContent className="flex flex-col gap-6">
+                <div className="flex flex-wrap items-center gap-6">
+                  <div>
+                    <span
+                      className="text-4xl font-bold"
+                      aria-label={`${creditsPercentage.toFixed(
+                        2,
+                      )} por ciento de avance del plan`}
+                    >
+                      {creditsPercentage.toFixed(2)}%
+                    </span>
+                    <p className="text-sm text-muted-foreground">
+                      avance del plan
+                    </p>
+                  </div>
 
-                <span
-                  className="text-sm ml-2"
-                  aria-label={`${creditsPercentage.toFixed(
-                    2,
-                  )} por ciento del total completado`}
-                >
-                  {creditsPercentage.toFixed(2)}% del total
-                </span>
-              </CardContent>
-            </Card>
+                  <div className="flex flex-col gap-1 text-sm">
+                    <span
+                      aria-label={`${approvedCredits} de ${TOTAL_CREDITS} créditos completados`}
+                    >
+                      <span className="font-semibold">{approvedCredits}</span> /{" "}
+                      {TOTAL_CREDITS} créditos
+                      {inProgressCredits > 0 && (
+                        <span className="text-muted-foreground">
+                          {" "}
+                          ({inProgressCredits} en curso)
+                        </span>
+                      )}
+                    </span>
+                    <span
+                      aria-label={`${approvedCount} de ${totalCount} materias completadas${
+                        inProgressCount > 0
+                          ? `, ${inProgressCount} en curso`
+                          : ""
+                      }`}
+                    >
+                      <span className="font-semibold">{approvedCount}</span> /{" "}
+                      {totalCount} materias completadas
+                      {inProgressCount > 0 && (
+                        <span className="text-muted-foreground">
+                          {" "}
+                          ({inProgressCount} en curso)
+                        </span>
+                      )}
+                    </span>
+                  </div>
+                </div>
 
-            {/* Créditos en curso */}
-            <Card
-              className="w-full h-[160px]"
-              role="region"
-              aria-labelledby="current-credits"
-            >
-              <CardHeader>
-                <CardTitle id="current-credits">Créditos en curso</CardTitle>
-              </CardHeader>
-              <CardContent className="text-2xl font-semibold">
-                <span
-                  aria-label={`${inProgressCredits} créditos en curso actualmente`}
-                >
-                  {inProgressCredits}
-                </span>
+                <div className="border-t pt-4">
+                  <p className="text-xs text-muted-foreground mb-3">
+                    Categorías de UEA
+                  </p>
+                  <CategoryLegend />
+                </div>
               </CardContent>
             </Card>
           </section>
