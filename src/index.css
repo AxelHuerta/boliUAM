@@ -4,6 +4,9 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Bricolage Grotesque", "Avenir Next", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -167,4 +170,22 @@
   --pattern-1: rgba(139, 92, 246, 0.3);
   --pattern-2: rgba(59, 130, 246, 0.25);
   --pattern-3: rgba(236, 72, 153, 0.2);
+}
+
+/* Locked UEAs: diagonal hatch drawn from the foreground token */
+@utility bg-hatch {
+  background-image: repeating-linear-gradient(
+    135deg,
+    transparent 0 6px,
+    color-mix(in oklab, var(--foreground) 9%, transparent) 6px 7px
+  );
+}
+
+/* In-progress share of the credits bar */
+@utility bg-progress-stripes {
+  background-image: repeating-linear-gradient(
+    135deg,
+    var(--foreground) 0 2px,
+    transparent 2px 5px
+  );
 }
