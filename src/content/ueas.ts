@@ -51,7 +51,7 @@ export const trimesters = [
     },
     {
       id: "2130039",
-      trimester: 1,
+      trimester: 2,
       name: "cálculo integral",
       credits: 11,
       seriation: ["2130038"],
@@ -60,7 +60,7 @@ export const trimesters = [
     {
       id: "2110020",
       trimester: 2,
-      name: "mécanica elemental II",
+      name: "mecánica elemental II",
       credits: 9,
       seriation: ["2110019"],
       type: "tronco",
@@ -88,7 +88,7 @@ export const trimesters = [
     {
       id: "2130035",
       trimester: 3,
-      name: "algebra lineal aplicada I",
+      name: "álgebra lineal aplicada I",
       credits: 9,
       seriation: [],
       type: "tronco",
@@ -125,7 +125,7 @@ export const trimesters = [
     {
       id: "2132074",
       trimester: 4,
-      name: "algebra lineal aplicada II",
+      name: "álgebra lineal aplicada II",
       credits: 9,
       seriation: ["2130035"],
       type: "tronco",
@@ -197,7 +197,7 @@ export const trimesters = [
     {
       id: "2131041",
       trimester: 6,
-      name: "estadistica y diseño de experimentos",
+      name: "estadística y diseño de experimentos",
       credits: 9,
       seriation: ["2131094"],
       type: "tronco",
@@ -263,7 +263,7 @@ export const trimesters = [
       trimester: 8,
       name: "inglés intermedio II",
       credits: 10,
-      seriation: ["2155064"],
+      seriation: ["2255064"],
       type: "tronco",
     },
     {
@@ -299,7 +299,7 @@ export const trimesters = [
       trimester: 9,
       name: "inglés intermedio III",
       credits: 10,
-      seriation: ["2155065"],
+      seriation: ["2255065"],
       type: "tronco",
     },
     {
@@ -393,7 +393,7 @@ export const trimesters = [
     {
       id: "proyecto 1",
       trimester: 11,
-      name: "proyecto de investiagación I",
+      name: "proyecto de investigación I",
       credits: 12,
       seriation: ["2151112", "2151114"],
       type: "proyecto",
@@ -429,9 +429,9 @@ export const trimesters = [
     {
       id: "proyecto 2",
       trimester: 12,
-      name: "proyecto de investiagación II",
+      name: "proyecto de investigación II",
       credits: 18,
-      seriation: ["proyecto de investiagación I"],
+      seriation: ["proyecto 1"],
       type: "proyecto",
     },
   ],

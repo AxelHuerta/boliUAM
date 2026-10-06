@@ -1,15 +1,21 @@
+import { useCallback, useEffect, useState } from "react";
+import { flushSync } from "react-dom";
+import { Github, LayoutPanelTop, Timer, X } from "lucide-react";
 import { ModeToggle } from "./components/mode-toggle";
 import { SEO } from "./components/seo";
-import UeaCard from "./components/uea-card";
-import UeaOptativaCard from "./components/uea-otativa-card";
-import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
+import { NowView } from "./components/now-view";
+import { PlanView, type PlanFilter } from "./components/plan-view";
+import { ProgressSummary } from "./components/progress-summary";
+import { Toaster } from "./components/toaster";
+import { UeaDetail } from "./components/uea-detail";
+import { Button } from "./components/ui/button";
+import { Dialog, DialogContent } from "./components/ui/dialog";
 import { SEOConfigs } from "./config/seo-config";
-import { trimesters } from "./content/ueas";
-import { useUeaStore } from "./store/ueas-store";
 import { ThemeProvider } from "./theme-provider";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { useFirestoreSync } from "./hooks/use-firestore-sync";
-import { Github } from "lucide-react";
+import { useMediaQuery } from "./hooks/use-media-query";
+import { cn } from "./lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,25 +24,42 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+type View = "now" | "plan";
+
+const tabs = [
+  { id: "now", label: "Ahora", Icon: Timer },
+  { id: "plan", label: "Plan", Icon: LayoutPanelTop },
+] as const;
+
 function AppContent() {
   const { user, loading, logout, signInWithGithub } = useAuth();
-  const ueasStore = useUeaStore((state) => state.ueas);
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
+  const [view, setView] = useState<View>("now");
+  const [filter, setFilter] = useState<PlanFilter>("all");
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   // Sync data with Firestore if user is logged in
   useFirestoreSync();
 
-  let approvedCredits = 0;
-  let inProgressCredits = 0;
-
-  for (let i = 0; i < ueasStore.length; i++) {
-    if (ueasStore[i].status === "approved") {
-      approvedCredits += ueasStore[i].credits;
-    } else if (ueasStore[i].status === "in-progress") {
-      inProgressCredits += ueasStore[i].credits;
+  // Selecting/deselecting a UEA hides or reveals cards across the board;
+  // wrapping it in a View Transition animates that instead of a hard cut.
+  const selectWithTransition = useCallback((id: string | null) => {
+    if (typeof document !== "undefined" && "startViewTransition" in document) {
+      document.startViewTransition(() => {
+        flushSync(() => setSelectedId(id));
+      });
+    } else {
+      setSelectedId(id);
     }
-  }
+  }, []);
 
-  const creditsPercentage = (approvedCredits * 100) / 477;
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") selectWithTransition(null);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [selectWithTransition]);
 
   if (loading) {
     return (
@@ -47,20 +70,20 @@ function AppContent() {
   }
 
   return (
-    <div className="min-h-screen w-full relative">
+    <div className="min-h-screen w-full bg-background text-foreground">
       <SEO {...SEOConfigs.home} />
-      {/* Theme-aware background pattern */}
-      <div className="absolute inset-0 z-0 noise-pattern-bg" />
-      <div className="relative z-10 mx-auto px-4 py-8">
-        <header className="flex w-full justify-between items-center p-4">
-          <div>
-            <h1 className="text-3xl font-bold">BoliUAM</h1>
-            <p className="text-sm text-muted-foreground mt-1">
-              Licenciatura en Computación
+      <div className="mx-auto max-w-[1680px] px-4 pt-4 pb-24 lg:px-8 lg:pt-6 lg:pb-12">
+        <header className="grid grid-cols-[1fr_auto] items-center gap-3.5 lg:grid-cols-[auto_1fr_auto_auto] lg:gap-6">
+          <div className="lg:order-1">
+            <h1 className="font-display text-[22px] leading-none font-bold tracking-tight">
+              BoliUAM
+            </h1>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Lic. en Computación · UAM Iztapalapa
             </p>
-            <span>UAM Iztapalapa</span>
           </div>
-          <div className="flex items-center gap-4">
+
+          <div className="flex items-center gap-4 lg:order-4">
             {user ? (
               <div className="flex items-center gap-2">
                 <DropdownMenu>
@@ -93,110 +116,117 @@ function AppContent() {
             )}
             <ModeToggle />
           </div>
+
+          <ProgressSummary className="col-span-2 lg:col-span-1 lg:order-2" />
+
+          <nav
+            role="tablist"
+            aria-label="Vista"
+            className="fixed inset-x-0 bottom-0 z-20 grid grid-cols-2 gap-2 border-t bg-card px-4 pt-1.5 pb-[calc(6px+env(safe-area-inset-bottom,0px))] lg:static lg:order-3 lg:grid-cols-[auto_auto] lg:gap-0.5 lg:rounded-xl lg:border lg:p-1"
+          >
+            {tabs.map(({ id, label, Icon }) => (
+              <button
+                key={id}
+                type="button"
+                role="tab"
+                aria-selected={view === id}
+                onClick={() => setView(id)}
+                className={cn(
+                  "flex cursor-pointer flex-col items-center gap-0.5 rounded-xl p-2 text-xs font-medium text-muted-foreground lg:flex-row lg:gap-1.5 lg:px-3.5 lg:py-[7px] lg:text-[13px]",
+                  view === id && "bg-muted font-semibold text-foreground",
+                )}
+              >
+                <Icon className="size-5 lg:size-4" aria-hidden="true" />
+                {label}
+              </button>
+            ))}
+          </nav>
         </header>
 
-        <main role="main">
-          <section
-            className="m-2 p-2 space-y-4 sm:flex gap-4"
-            aria-label="Resumen de créditos académicos"
+        <div className="mt-5 lg:mt-7 lg:grid lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start lg:gap-7">
+          <main
+            role="tabpanel"
+            aria-label={view === "now" ? "Ahora" : "Plan de estudios"}
           >
-            {/* Créditos totales */}
-            <Card
-              className="w-full h-[160px]"
-              role="region"
-              aria-labelledby="total-credits"
-            >
-              <CardHeader>
-                <CardTitle id="total-credits">Créditos totales</CardTitle>
-              </CardHeader>
-              <CardContent className="text-2xl font-semibold">
-                <span aria-label="477 créditos totales de la carrera">477</span>
-              </CardContent>
-            </Card>
+            {view === "now" ? (
+              <NowView
+                selectedId={selectedId}
+                onSelect={selectWithTransition}
+                onOpenPlan={(category) => {
+                  setFilter(category);
+                  setView("plan");
+                  window.scrollTo({ top: 0 });
+                }}
+              />
+            ) : (
+              <PlanView
+                selectedId={selectedId}
+                filter={filter}
+                onFilterChange={setFilter}
+                onSelect={selectWithTransition}
+              />
+            )}
+          </main>
 
-            {/* Créditos completados */}
-            <Card
-              className="w-full h-[160px]"
-              role="region"
-              aria-labelledby="completed-credits"
-            >
-              <CardHeader>
-                <CardTitle id="completed-credits">
-                  Créditos completados
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="text-2xl font-semibold">
-                <p aria-label={`${approvedCredits} créditos completados`}>
-                  {approvedCredits}
-                </p>
-
-                <span
-                  className="text-sm ml-2"
-                  aria-label={`${creditsPercentage.toFixed(
-                    2,
-                  )} por ciento del total completado`}
-                >
-                  {creditsPercentage.toFixed(2)}% del total
-                </span>
-              </CardContent>
-            </Card>
-
-            {/* Créditos en curso */}
-            <Card
-              className="w-full h-[160px]"
-              role="region"
-              aria-labelledby="current-credits"
-            >
-              <CardHeader>
-                <CardTitle id="current-credits">Créditos en curso</CardTitle>
-              </CardHeader>
-              <CardContent className="text-2xl font-semibold">
-                <span
-                  aria-label={`${inProgressCredits} créditos en curso actualmente`}
-                >
-                  {inProgressCredits}
-                </span>
-              </CardContent>
-            </Card>
-          </section>
-
-          {trimesters.map((trimester) => (
-            <section
-              key={trimester[0].trimester}
-              className="flex flex-col md:m-8"
-              aria-labelledby={`trimester-${trimester[0].trimester}-heading`}
-            >
-              <h2
-                id={`trimester-${trimester[0].trimester}-heading`}
-                className="text-2xl font-semibold m-4"
+          {isDesktop ? (
+            // contain-size: the panel never makes the row taller than the main column
+            <div className="self-stretch contain-size">
+              <aside
+                aria-label="Detalle de la UEA"
+                className="sticky top-5 max-h-[min(100%,calc(100dvh-40px))] overflow-auto rounded-2xl border bg-card p-[18px]"
               >
-                Trimestre {trimester[0].trimester}
-              </h2>
-              <div
-                className="mx-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-                role="list"
-                aria-label={`Materias del trimestre ${trimester[0].trimester}`}
+                {selectedId ? (
+                  <div className="relative">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="absolute top-0 right-0 z-10 rounded-full"
+                      onClick={() => selectWithTransition(null)}
+                      aria-label="Cerrar detalle"
+                    >
+                      <X aria-hidden="true" />
+                    </Button>
+                    <UeaDetail id={selectedId} onSelect={selectWithTransition} />
+                  </div>
+                ) : (
+                  <div className="text-muted-foreground">
+                    <h2 className="font-display mb-1.5 text-lg font-bold text-foreground">
+                      Seriación
+                    </h2>
+                    <p className="mb-2.5">
+                      Elige una UEA para ver qué necesitas aprobar antes y qué
+                      se abre cuando la apruebes.
+                    </p>
+                    <p>
+                      En el plan, el mapa se reduce a esa cadena y atenúa el
+                      resto.
+                    </p>
+                  </div>
+                )}
+              </aside>
+            </div>
+          ) : (
+            <Dialog
+              open={selectedId !== null}
+              onOpenChange={(open) => !open && selectWithTransition(null)}
+            >
+              <DialogContent
+                aria-describedby={undefined}
+                className="top-auto bottom-0 left-0 max-h-[86dvh] max-w-full translate-x-0 translate-y-0 gap-0 overflow-auto rounded-t-[20px] rounded-b-none p-[18px] pb-[calc(22px+env(safe-area-inset-bottom,0px))] data-[state=open]:slide-in-from-bottom sm:max-w-full"
               >
-                {trimester.map((uea) => {
-                  if (uea.id.includes("optativa")) {
-                    return (
-                      <div key={uea.id} role="listitem">
-                        <UeaOptativaCard id={uea.id} name={uea.name} />
-                      </div>
-                    );
-                  }
-
-                  return (
-                    <div key={uea.id} role="listitem">
-                      <UeaCard uea={uea} />
-                    </div>
-                  );
-                })}
-              </div>
-            </section>
-          ))}
-        </main>
+                {selectedId && (
+                  <UeaDetail
+                    id={selectedId}
+                    asDialog
+                    onSelect={selectWithTransition}
+                  />
+                )}
+              </DialogContent>
+            </Dialog>
+          )}
+        </div>
       </div>
+      <Toaster />
     </div>
   );
 }
