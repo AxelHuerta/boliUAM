@@ -55,6 +55,7 @@ export function NowView({ selectedId, onSelect, onOpenPlan }: Props) {
                 role="listitem"
                 view={view}
                 selected={selectedId === view.uea.id}
+                style={{ viewTransitionName: `uea-${view.uea.id}` }}
                 onSelect={onSelect}
                 onCycle={changeStatus}
               />

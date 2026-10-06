@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { flushSync } from "react-dom";
 import { Github, LayoutPanelTop, Timer, X } from "lucide-react";
 import { ModeToggle } from "./components/mode-toggle";
 import { SEO } from "./components/seo";
@@ -40,13 +41,25 @@ function AppContent() {
   // Sync data with Firestore if user is logged in
   useFirestoreSync();
 
+  // Selecting/deselecting a UEA hides or reveals cards across the board;
+  // wrapping it in a View Transition animates that instead of a hard cut.
+  const selectWithTransition = useCallback((id: string | null) => {
+    if (typeof document !== "undefined" && "startViewTransition" in document) {
+      document.startViewTransition(() => {
+        flushSync(() => setSelectedId(id));
+      });
+    } else {
+      setSelectedId(id);
+    }
+  }, []);
+
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setSelectedId(null);
+      if (event.key === "Escape") selectWithTransition(null);
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, []);
+  }, [selectWithTransition]);
 
   if (loading) {
     return (
@@ -138,7 +151,7 @@ function AppContent() {
             {view === "now" ? (
               <NowView
                 selectedId={selectedId}
-                onSelect={setSelectedId}
+                onSelect={selectWithTransition}
                 onOpenPlan={(category) => {
                   setFilter(category);
                   setView("plan");
@@ -150,7 +163,7 @@ function AppContent() {
                 selectedId={selectedId}
                 filter={filter}
                 onFilterChange={setFilter}
-                onSelect={setSelectedId}
+                onSelect={selectWithTransition}
               />
             )}
           </main>
@@ -168,12 +181,12 @@ function AppContent() {
                       variant="outline"
                       size="icon"
                       className="absolute top-0 right-0 z-10 rounded-full"
-                      onClick={() => setSelectedId(null)}
+                      onClick={() => selectWithTransition(null)}
                       aria-label="Cerrar detalle"
                     >
                       <X aria-hidden="true" />
                     </Button>
-                    <UeaDetail id={selectedId} onSelect={setSelectedId} />
+                    <UeaDetail id={selectedId} onSelect={selectWithTransition} />
                   </div>
                 ) : (
                   <div className="text-muted-foreground">
@@ -195,7 +208,7 @@ function AppContent() {
           ) : (
             <Dialog
               open={selectedId !== null}
-              onOpenChange={(open) => !open && setSelectedId(null)}
+              onOpenChange={(open) => !open && selectWithTransition(null)}
             >
               <DialogContent
                 aria-describedby={undefined}
@@ -205,7 +218,7 @@ function AppContent() {
                   <UeaDetail
                     id={selectedId}
                     asDialog
-                    onSelect={setSelectedId}
+                    onSelect={selectWithTransition}
                   />
                 )}
               </DialogContent>
